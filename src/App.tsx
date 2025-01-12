@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 const originalContent = ` Ukraine has made good on its promise to halt the transport of Russian gas to Europe through its territory after a key deal with Moscow expired on Wednesday.
 
@@ -27,50 +27,24 @@ However, Slovakia’s Prime Minister Robert Fico said on Wednesday that the halt
 Fico has previously argued that the end of the deal would lead to higher gas and electricity prices in Europe, the news agency said.`;
 
 export default function Home() {
-  // const contentList = originalContent.split(/\s+/);
-  // const [typedContent, setTypedContent] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      contentRef.current.focus();
-    }
-  }, []);
-
-  const renderContent = () => {
-    // const typedContentList = typedContent.split(/\s+/);
-
-    return originalContent;
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === " ") {
-      event.preventDefault();
-    }
-
-    setTypedContent((prev) => prev + event.key);
-  };
 
   return (
     <article className="max-w-4x1 mx-auto font-serif p-7">
       <header className="font-headline border-b-4 border-black pb-4 mb-8">
         <h1 className="text-center text-6xl font-bold mb-2">
           Typewriter Times
-        </h1>        <p className="text-l text-center italic">
+        </h1>
+        <p className="text-l text-center italic">
           A nostalgic typing journey inspired by classic journalism.
         </p>
       </header>
       <h2 className="text-4xl font-bold mb-4 font-headline">
         Ukraine ends supply of Russian gas to Europe
       </h2>
-      <div
-        className="grid outline-none"
-        ref={contentRef}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-      >
+      <div className="grid outline-none" ref={contentRef} tabIndex={0}>
         <p className="columns-2 gap-4 text-justify leading-tight">
-          {renderContent()}
+          {originalContent}
         </p>
       </div>
     </article>
