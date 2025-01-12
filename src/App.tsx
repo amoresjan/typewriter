@@ -28,7 +28,7 @@ Fico has previously argued that the end of the deal would lead to higher gas and
 
 export default function Home() {
   // const contentList = originalContent.split(/\s+/);
-  const [typedContent, setTypedContent] = useState("");
+  // const [typedContent, setTypedContent] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
