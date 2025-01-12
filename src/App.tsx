@@ -27,7 +27,7 @@ However, Slovakia’s Prime Minister Robert Fico said on Wednesday that the halt
 Fico has previously argued that the end of the deal would lead to higher gas and electricity prices in Europe, the news agency said.`;
 
 export default function Home() {
-  const contentList = originalContent.split(/\s+/);
+  // const contentList = originalContent.split(/\s+/);
   const [typedContent, setTypedContent] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ export default function Home() {
   }, []);
 
   const renderContent = () => {
-    const typedContentList = typedContent.split(/\s+/);
+    // const typedContentList = typedContent.split(/\s+/);
 
     return originalContent;
   };
@@ -56,8 +56,7 @@ export default function Home() {
       <header className="font-headline border-b-4 border-black pb-4 mb-8">
         <h1 className="text-center text-6xl font-bold mb-2">
           Typewriter Times
-        </h1>
-        <p className="text-l text-center italic">
+        </h1>        <p className="text-l text-center italic">
           A nostalgic typing journey inspired by classic journalism.
         </p>
       </header>
