@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const originalContent = ` Ukraine has made good on its promise to halt the transport of Russian gas to Europe through its territory after a key deal with Moscow expired on Wednesday.
+const originalContent = `Ukraine has made good on its promise to halt the transport of Russian gas to Europe through its territory after a key deal with Moscow expired on Wednesday.
 
 Ukraine’s refusal to renew the transit deal was an expected but symbolic move after nearly three years of its full-scale war with Russia, and comes after Europe has already drastically cut Moscow’s share of its gas imports. Ukraine’s energy ministry said it ended the deal “in the interests of national security.”
 
@@ -27,26 +27,110 @@ However, Slovakia’s Prime Minister Robert Fico said on Wednesday that the halt
 Fico has previously argued that the end of the deal would lead to higher gas and electricity prices in Europe, the news agency said.`;
 
 export default function Home() {
+  const [typedContent, setTypedContent] = useState("");
   const contentRef = useRef<HTMLDivElement>(null);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const originalWords = originalContent.split(/\s+/);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.focus();
+    }
+  }, []);
+
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === " " || e.key === "Enter") {
+      setCurrentWordIndex((prev) => prev + 1);
+      setTypedContent((prev) => prev + " ");
+    } else if (e.key === "Backspace") {
+      setTypedContent((prev) => prev.slice(0, -1));
+      if (typedContent.endsWith(" ")) {
+        setCurrentWordIndex((prev) => Math.max(0, prev - 1));
+      }
+    } else if (e.key.length === 1) {
+      setTypedContent((prev) => prev + e.key);
+    }
+    e.preventDefault();
+  };
+
+  const renderedContent = () => {
+    // splits content by whitespaces (" ", "\t", "\n", "\r", "\f")
+    const typedWords = typedContent.split(/\s+/);
+
+    return originalWords.map((word, index) => {
+      if (index === currentWordIndex || index < currentWordIndex) {
+        const typedLetters = typedWords[index] || "";
+        return (
+          <span key={index}>
+            {word.split("").map((letter, letterIndex) => {
+              const isCurrentLetter = letterIndex === typedLetters.length;
+              return (
+                <span
+                  key={letterIndex}
+                  className={
+                    // checking for previous letters in the current word, red for wrong, black for correct
+                    letterIndex < typedLetters.length
+                      ? typedLetters[letterIndex] === letter
+                        ? "text-black"
+                        : "text-red-500 line-through"
+                      : // checking for current letter, apply caret here
+                      isCurrentLetter
+                      ? "text-white bg-black"
+                      : // checking for untyped letters
+                        "text-gray-300"
+                  }
+                >
+                  {letter}
+                </span>
+              );
+            })}{" "}
+          </span>
+        );
+      } else {
+        return (
+          <span key={index} className="text-gray-300">
+            {word}{" "}
+          </span>
+        );
+      }
+    });
+  };
 
   return (
-    <article className="max-w-4x1 mx-auto font-serif p-7">
-      <header className="font-headline border-b-4 border-black pb-4 mb-8">
-        <h1 className="text-center text-6xl font-bold mb-2">
+    <article className="max-w-7xl mx-auto font-serif px-12 pt-6">
+      <header className="mb-6">
+        <h1 className="text-center text-6xl font-bold pb-4 border-b-[1px] border-black">
           Typewriter Times
         </h1>
-        <p className="text-l text-center italic">
-          A nostalgic typing journey inspired by classic journalism.
-        </p>
+        <div className="flex flex-row border-b-2 border-black mt-1 justify-between">
+          <div>amoresjan</div>
+          <p>SUNDAY, JANUARY 19, 2025</p>
+          <p>120 WPM | 97%</p>
+        </div>
       </header>
-      <h2 className="text-4xl font-bold mb-4 font-headline">
-        Ukraine ends supply of Russian gas to Europe
-      </h2>
-      <div className="grid outline-none" ref={contentRef} tabIndex={0}>
-        <p className="columns-2 gap-4 text-justify leading-tight">
-          {originalContent}
-        </p>
-      </div>
+      <body>
+        <div className="mb-4">
+          <h2 className="text-4xl font-semibold mb-1">
+            Ukraine ends supply of Russian gas to Europe
+          </h2>
+          <h3 className="text-[#6e6e6e]">
+            Kosta Gak, Alex Stambaugh, Anna Cooban - CNN
+          </h3>
+        </div>
+        <h3>Words index: {currentWordIndex}</h3>
+        <h3>Typed content: {typedContent}</h3>
+        <div
+          className="mt-4 grid outline-none"
+          ref={contentRef}
+          tabIndex={0}
+          onKeyDown={handleOnKeyDown}
+        >
+          <p className="columns-2 gap-4 text-justify leading-tight">
+            {renderedContent()}
+          </p>
+        </div>
+      </body>
     </article>
   );
 }
