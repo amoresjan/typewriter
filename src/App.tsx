@@ -42,7 +42,7 @@ export default function Home() {
       <h2 className="text-4xl font-bold mb-4 font-headline">
         Ukraine ends supply of Russian gas to Europe
       </h2>
-      <div className="grid outline-none" ref={contentRef} tabIndex={0}>
+      <div className="grid outline-hidden" ref={contentRef} tabIndex={0}>
         <p className="columns-2 gap-4 text-justify leading-tight">
           {originalContent}
         </p>
