@@ -30,16 +30,16 @@ export default function Home() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   return (
-    <article className="max-w-4x1 mx-auto font-serif p-7">
-      <header className="font-headline border-b-4 border-black pb-4 mb-8">
-        <h1 className="text-center text-6xl font-bold mb-2">
+    <article className="max-w-4x1 mx-auto p-7 font-serif">
+      <header className="font-headline mb-8 border-b-4 border-black pb-4">
+        <h1 className="mb-2 text-center text-6xl font-bold">
           Typewriter Times
         </h1>
         <p className="text-l text-center italic">
           A nostalgic typing journey inspired by classic journalism.
         </p>
       </header>
-      <h2 className="text-4xl font-bold mb-4 font-headline">
+      <h2 className="font-headline mb-4 text-4xl font-bold">
         Ukraine ends supply of Russian gas to Europe
       </h2>
       <div className="grid outline-hidden" ref={contentRef} tabIndex={0}>
