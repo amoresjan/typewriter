@@ -4,7 +4,7 @@ import { useCallback, useReducer } from "react";
 import NewsContent from "./components/NewsContent";
 import Header from "./components/Header";
 import NewsHeader from "./components/NewsHeader";
-import { typingReducer } from "./reducers/typingReducer";
+import { typingReducer } from "./reducers/TypingReducer";
 import { NEWS_CONTENT_MOCK } from "./mocks/NewsContentMock";
 
 export default function Home() {
