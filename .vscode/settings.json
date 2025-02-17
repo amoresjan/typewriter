@@ -8,5 +8,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "eslint.enable": true
+  "eslint.enable": true,
+  "prettier.configPath": "C:\\Users\\amore\\typewriter\\.prettierrc"
 }
