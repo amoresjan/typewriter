@@ -9,5 +9,4 @@
     "source.fixAll.eslint": "always"
   },
   "eslint.enable": true,
-  "prettier.configPath": "C:\\Users\\amore\\typewriter\\.prettierrc"
 }
