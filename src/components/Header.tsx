@@ -1,6 +1,11 @@
 import React from "react";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  wpm: number;
+  accuracy: number;
+}
+
+const Header: React.FC<HeaderProps> = ({ wpm, accuracy }) => {
   return (
     <header className="mb-6">
       <h1 className="border-b-[1px] border-black pb-4 text-center text-6xl font-bold">
@@ -9,7 +14,9 @@ const Header: React.FC = () => {
       <div className="mt-1 flex flex-row justify-between border-b-2 border-black">
         <div>amoresjan</div>
         <p>SUNDAY, JANUARY 19, 2025</p>
-        <p>120 WPM | 97%</p>
+        <p className="w-48 text-right tabular-nums">
+          {wpm} WPM | {accuracy}%
+        </p>
       </div>
     </header>
   );
