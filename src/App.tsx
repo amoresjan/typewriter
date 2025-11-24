@@ -42,7 +42,7 @@ export default function Home() {
   );
 
   return (
-    <article className="mx-auto max-w-7xl px-12 pt-6 font-serif">
+    <article className="mx-auto max-w-5xl px-12 pt-6">
       <Header wpm={state.wpm} accuracy={state.accuracy} />
       <NewsHeader news={news} />
       <NewsContent state={state} handleOnKeyDown={handleOnKeyDown} />

@@ -1,4 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Manufacturing+Consent&display=swap');
 @import 'tailwindcss';
+
+@theme {
+  --font-old-english: "Manufacturing Consent", cursive;
+  --font-helvetica: "Helvetica", "Arial", sans-serif;
+}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -9,6 +15,10 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+  html {
+    font-family: "Times New Roman", Times, serif;
+  }
+
   *,
   ::after,
   ::before,
