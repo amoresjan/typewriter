@@ -100,7 +100,21 @@ function calculateWpm(
   // Add spaces for completed words
   const spacesCount = state.currentWordIndex;
 
-  const totalChars = completedWordsLength + spacesCount + currentTypedWord.length;
+  const currentTargetWord = state.wordsList[state.currentWordIndex];
+  let correctCharsInCurrentWord = 0;
+  const lengthToCompare = Math.min(
+    currentTypedWord.length,
+    currentTargetWord.length,
+  );
+
+  for (let i = 0; i < lengthToCompare; i++) {
+    if (currentTypedWord[i] === currentTargetWord[i]) {
+      correctCharsInCurrentWord++;
+    }
+  }
+
+  const totalChars =
+    completedWordsLength + spacesCount + correctCharsInCurrentWord;
   const wpm = Math.round(totalChars / 5 / timeElapsedMinutes);
 
   return wpm;
