@@ -19,25 +19,29 @@ const Word: React.FC<{
   return <UntypedWord word={word} />;
 };
 
-const Words: React.FC<TypingState> = ({
+const Words: React.FC<{
+  currentWordIndex: number;
+  typedWord: string;
+  wordsList: string[];
+}> = ({
   currentWordIndex,
   typedWord,
   wordsList,
 }) => {
-  return (
-    <p className="columns-2 gap-4 text-justify leading-tight">
-      {wordsList.map((word, wordIndex) => (
-        <Word
-          key={wordIndex}
-          word={word}
-          isTyped={wordIndex < currentWordIndex}
-          isCurrent={wordIndex === currentWordIndex}
-          typedWord={typedWord}
-        />
-      ))}
-    </p>
-  );
-};
+    return (
+      <p className="columns-2 gap-4 text-justify leading-tight">
+        {wordsList.map((word, wordIndex) => (
+          <Word
+            key={wordIndex}
+            word={word}
+            isTyped={wordIndex < currentWordIndex}
+            isCurrent={wordIndex === currentWordIndex}
+            typedWord={typedWord}
+          />
+        ))}
+      </p>
+    );
+  };
 
 const TypedWord: React.FC<{ word: string }> = ({ word }) => {
   return <span className="text-black">{word} </span>;
