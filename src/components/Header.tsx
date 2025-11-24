@@ -8,11 +8,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ wpm, accuracy }) => {
   return (
     <header className="mb-6">
-      <h1 className="border-b-[1px] border-black pb-4 text-center text-6xl font-bold">
+      <h1 className="border-b-[1px] border-black pb-4 text-center text-6xl font-old-english">
         Typewriter Times
       </h1>
-      <div className="mt-1 flex flex-row justify-between border-b-2 border-black">
-        <div>amoresjan</div>
+      <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
+        <div className="w-48">amoresjan</div>
         <p>SUNDAY, JANUARY 19, 2025</p>
         <p className="w-48 text-right tabular-nums">
           {wpm} WPM | {accuracy}%
