@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TypingState } from "../types";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
+import { CursorArrowIcon } from "@radix-ui/react-icons";
 
 type NewsContentProps = {
   state: TypingState;
@@ -112,17 +113,67 @@ const NewsContent: React.FC<NewsContentProps> = ({
   handleOnKeyDown,
 }) => {
   const { currentWordIndex, typedWord, wordsList } = state;
+  const [isFocused, setIsFocused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Auto-focus on mount
+    containerRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = () => {
+      if (!isFocused && containerRef.current) {
+        containerRef.current.focus();
+      }
+    };
+
+    if (!isFocused) {
+      window.addEventListener("keydown", handleGlobalKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [isFocused]);
+
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
+  const handleOverlayClick = () => {
+    containerRef.current?.focus();
+  };
+
   return (
-    <div
-      className="mt-4 grid outline-none"
-      tabIndex={0}
-      onKeyDown={handleOnKeyDown}
-    >
-      <Words
-        wordsList={wordsList}
-        currentWordIndex={currentWordIndex}
-        typedWord={typedWord}
-      />
+    <div className="relative mt-4">
+      {!isFocused && (
+        <div
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
+          onClick={handleOverlayClick}
+        >
+          <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-600 shadow-sm font-helvetica">
+            <CursorArrowIcon />
+            <span>Click here or press any key to focus</span>
+          </div>
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        className={twMerge(
+          "grid outline-none transition-all duration-200",
+          !isFocused && "blur-[1.5px] filter",
+        )}
+        tabIndex={0}
+        onKeyDown={handleOnKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      >
+        <Words
+          wordsList={wordsList}
+          currentWordIndex={currentWordIndex}
+          typedWord={typedWord}
+        />
+      </div>
     </div>
   );
 };
