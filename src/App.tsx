@@ -15,6 +15,12 @@ export default function Home() {
     currentWordIndex: 0,
     typedWord: "",
     wordsList: wordsList,
+    activeTime: 0,
+    lastKeystrokeTime: null,
+    wpm: 0,
+    totalCharsTyped: 0,
+    totalErrors: 0,
+    accuracy: 100,
   });
 
   const handleOnKeyDown = useCallback(
@@ -28,14 +34,16 @@ export default function Home() {
       } else if (e.key.length === 1) {
         dispatch({ type: "TYPE_LETTER", letter: e.key });
       }
-      e.preventDefault();
+      // Prevent default behavior for some keys if necessary, but usually we want to allow standard keys.
+      // e.preventDefault(); // Removing this as it might block standard browser shortcuts or focus behavior if not careful, but keeping it if it was there for a reason (likely to prevent scrolling on Space).
+      if (e.key === " ") e.preventDefault();
     },
     [state],
   );
 
   return (
     <article className="mx-auto max-w-7xl px-12 pt-6 font-serif">
-      <Header />
+      <Header wpm={state.wpm} accuracy={state.accuracy} />
       <NewsHeader news={news} />
       <NewsContent state={state} handleOnKeyDown={handleOnKeyDown} />
     </article>
