@@ -5,7 +5,7 @@ type NewsHeaderProps = {
   news: Pick<News, "title" | "author" | "source">;
 };
 
-const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
+const NewsHeader: React.FC<NewsHeaderProps> = React.memo(({ news }) => {
   return (
     <div className="mb-4">
       <h2 className="mb-1 text-4xl font-semibold">{news.title}</h2>
@@ -14,6 +14,6 @@ const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       </h3>
     </div>
   );
-};
+});
 
 export default NewsHeader;
