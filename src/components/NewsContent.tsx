@@ -93,7 +93,7 @@ const Letter: React.FC<{
     <span
       className={twMerge(
         clsx(
-          isCurrentLetter && "bg-black text-white",
+          isCurrentLetter && "bg-black text-white cursor-blink",
           isIncorrect && "bg-red-400 text-white decoration-red-400",
           !typedLetter ? "text-gray-300" : "text-black",
         ),
