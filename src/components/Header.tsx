@@ -1,25 +1,39 @@
 import React from "react";
 
-interface HeaderProps {
-  wpm: number;
-  accuracy: number;
-}
+import { useGameState } from "../context/GameContext";
 
-const Header: React.FC<HeaderProps> = ({ wpm, accuracy }) => {
+const HeaderTitle: React.FC = React.memo(() => (
+  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-6xl">
+    The Typewriter Times
+  </h1>
+));
+
+const Stats: React.FC = React.memo(() => {
+  const state = useGameState();
+  const { wpm, accuracy } = state;
+
+  return (
+    <p className="w-48 text-right tabular-nums">
+      {wpm} WPM | {accuracy}%
+    </p>
+  );
+});
+
+const HeaderMeta: React.FC = React.memo(() => (
+  <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
+    <div className="w-48">amoresjan</div>
+    <p>SUNDAY, JANUARY 19, 2025</p>
+    <Stats />
+  </div>
+));
+
+const Header: React.FC = React.memo(() => {
   return (
     <header className="mb-6">
-      <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-6xl">
-        The Typewriter Times
-      </h1>
-      <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
-        <div className="w-48">amoresjan</div>
-        <p>SUNDAY, JANUARY 19, 2025</p>
-        <p className="w-48 text-right tabular-nums">
-          {wpm} WPM | {accuracy}%
-        </p>
-      </div>
+      <HeaderTitle />
+      <HeaderMeta />
     </header>
   );
-};
+});
 
 export default Header;
