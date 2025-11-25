@@ -40,8 +40,12 @@ export function typingReducer(
       const totalCharsTyped = state.totalCharsTyped + 1;
       const letterIndex = typedWord.length - 1;
       const isIncorrect = currentWord[letterIndex] !== action.letter;
-      const totalErrors = isIncorrect ? state.totalErrors + 1 : state.totalErrors;
-      const accuracy = Math.round(((totalCharsTyped - totalErrors) / totalCharsTyped) * 100);
+      const totalErrors = isIncorrect
+        ? state.totalErrors + 1
+        : state.totalErrors;
+      const accuracy = Math.round(
+        ((totalCharsTyped - totalErrors) / totalCharsTyped) * 100,
+      );
 
       return {
         ...state,
