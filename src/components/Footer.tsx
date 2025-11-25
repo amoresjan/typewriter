@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer: React.FC = React.memo(() => {
+const Footer: React.FC = () => {
   return (
     <footer className="w-full border-t border-gray-300 bg-gray-100 py-4">
       <div className="flex justify-end px-12 font-helvetica text-sm text-gray-600">
@@ -18,6 +18,6 @@ const Footer: React.FC = React.memo(() => {
       </div>
     </footer>
   );
-});
+};
 
 export default Footer;
