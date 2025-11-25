@@ -30,7 +30,7 @@ const Words: React.FC<{
   wordsList,
 }) => {
     return (
-      <p className="columns-2 gap-4 text-justify leading-tight">
+      <p className="columns-2 gap-4 text-justify leading-tight break-words">
         {wordsList.map((word, wordIndex) => (
           <Word
             key={wordIndex}
@@ -160,7 +160,7 @@ const NewsContent: React.FC<NewsContentProps> = ({
       <div
         ref={containerRef}
         className={twMerge(
-          "grid outline-none transition-all duration-200",
+          "grid outline-none transition-all duration-200 overflow-hidden",
           !isFocused && "blur-[1.5px] filter",
         )}
         tabIndex={0}
