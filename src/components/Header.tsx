@@ -9,7 +9,7 @@ const Header: React.FC<HeaderProps> = ({ wpm, accuracy }) => {
   return (
     <header className="mb-6">
       <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-6xl">
-        Typewriter Times
+        The Typewriter Times
       </h1>
       <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
         <div className="w-48">amoresjan</div>

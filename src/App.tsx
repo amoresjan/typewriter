@@ -4,6 +4,7 @@ import { useCallback, useReducer } from "react";
 import NewsContent from "./components/NewsContent";
 import Header from "./components/Header";
 import NewsHeader from "./components/NewsHeader";
+import Footer from "./components/Footer";
 import { typingReducer } from "./reducers/TypingReducer";
 import { NEWS_CONTENT_MOCK } from "./mocks/NewsContentMock";
 
@@ -42,10 +43,13 @@ export default function Home() {
   );
 
   return (
-    <article className="mx-auto max-w-5xl px-12 pt-6">
-      <Header wpm={state.wpm} accuracy={state.accuracy} />
-      <NewsHeader news={news} />
-      <NewsContent state={state} handleOnKeyDown={handleOnKeyDown} />
-    </article>
+    <div className="flex min-h-screen flex-col">
+      <article className="mx-auto w-full max-w-5xl flex-1 px-12 pt-6">
+        <Header wpm={state.wpm} accuracy={state.accuracy} />
+        <NewsHeader news={news} />
+        <NewsContent state={state} handleOnKeyDown={handleOnKeyDown} />
+      </article>
+      <Footer />
+    </div>
   );
 }
