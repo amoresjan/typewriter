@@ -11,6 +11,14 @@ export function typingReducer(
 ): TypingState {
   switch (action.type) {
     case "TYPE_LETTER": {
+      const currentWord = state.wordsList[state.currentWordIndex];
+      const maxLength = currentWord.length + 5;
+
+      // Prevent typing beyond current word + 5 characters
+      if (state.typedWord.length >= maxLength) {
+        return state;
+      }
+
       const now = Date.now();
       const timeSinceLastKeystroke =
         state.lastKeystrokeTime !== null ? now - state.lastKeystrokeTime : 0;
@@ -30,11 +38,14 @@ export function typingReducer(
 
       // Accuracy Logic
       const totalCharsTyped = state.totalCharsTyped + 1;
-      const currentWord = state.wordsList[state.currentWordIndex];
       const letterIndex = typedWord.length - 1;
       const isIncorrect = currentWord[letterIndex] !== action.letter;
-      const totalErrors = isIncorrect ? state.totalErrors + 1 : state.totalErrors;
-      const accuracy = Math.round(((totalCharsTyped - totalErrors) / totalCharsTyped) * 100);
+      const totalErrors = isIncorrect
+        ? state.totalErrors + 1
+        : state.totalErrors;
+      const accuracy = Math.round(
+        ((totalCharsTyped - totalErrors) / totalCharsTyped) * 100,
+      );
 
       return {
         ...state,

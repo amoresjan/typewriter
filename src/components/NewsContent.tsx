@@ -24,25 +24,21 @@ const Words: React.FC<{
   currentWordIndex: number;
   typedWord: string;
   wordsList: string[];
-}> = ({
-  currentWordIndex,
-  typedWord,
-  wordsList,
-}) => {
-    return (
-      <p className="columns-2 gap-4 text-justify leading-tight">
-        {wordsList.map((word, wordIndex) => (
-          <Word
-            key={wordIndex}
-            word={word}
-            isTyped={wordIndex < currentWordIndex}
-            isCurrent={wordIndex === currentWordIndex}
-            typedWord={typedWord}
-          />
-        ))}
-      </p>
-    );
-  };
+}> = ({ currentWordIndex, typedWord, wordsList }) => {
+  return (
+    <p className="columns-2 gap-4 text-justify leading-tight break-words">
+      {wordsList.map((word, wordIndex) => (
+        <Word
+          key={wordIndex}
+          word={word}
+          isTyped={wordIndex < currentWordIndex}
+          isCurrent={wordIndex === currentWordIndex}
+          typedWord={typedWord}
+        />
+      ))}
+    </p>
+  );
+};
 
 const TypedWord: React.FC<{ word: string }> = ({ word }) => {
   return <span className="text-black">{word} </span>;
@@ -151,7 +147,7 @@ const NewsContent: React.FC<NewsContentProps> = ({
           className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
           onClick={handleOverlayClick}
         >
-          <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-600 shadow-sm font-helvetica">
+          <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 font-helvetica text-sm font-medium text-gray-600 shadow-sm">
             <CursorArrowIcon />
             <span>Click here or press any key to focus</span>
           </div>
@@ -160,7 +156,7 @@ const NewsContent: React.FC<NewsContentProps> = ({
       <div
         ref={containerRef}
         className={twMerge(
-          "grid outline-none transition-all duration-200",
+          "grid overflow-hidden transition-all duration-200 outline-none",
           !isFocused && "blur-[1.5px] filter",
         )}
         tabIndex={0}
