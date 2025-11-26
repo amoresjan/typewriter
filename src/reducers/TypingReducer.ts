@@ -1,9 +1,4 @@
-import { TypingState } from "../types";
-
-export type TypingAction =
-  | { type: "TYPE_LETTER"; letter: string }
-  | { type: "DELETE_LETTER" }
-  | { type: "SUBMIT_WORD" };
+import { TypingState, TypingAction } from "../types";
 
 export function typingReducer(
   state: TypingState,

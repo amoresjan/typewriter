@@ -1,7 +1,7 @@
  import React, { createContext, Dispatch, useContext, useReducer } from "react";
-import { TypingState } from "../types";
-import { TypingAction, typingReducer } from "../reducers/TypingReducer";
-import { NEWS_CONTENT_MOCK } from "../mocks/NewsContentMock";
+import { TypingState, TypingAction } from "../types";
+import { typingReducer } from "../reducers/TypingReducer";
+import { News } from "../types";
 
 const GameStateContext = createContext<TypingState | null>(null);
 const GameDispatchContext = createContext<Dispatch<TypingAction> | null>(null);
@@ -22,10 +22,10 @@ export const useGameDispatch = () => {
   return context;
 };
 
-export const GameProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const news = NEWS_CONTENT_MOCK;
+export const GameProvider: React.FC<{
+  children: React.ReactNode;
+  news: News;
+}> = ({ children, news }) => {
   const wordsList = news.content.split(/\s+/);
 
   const [state, dispatch] = useReducer(typingReducer, {
