@@ -28,7 +28,7 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
 
   return (
     <article className="mx-auto w-full max-w-5xl flex-1 px-12 pt-6">
-      <Header />
+      <Header date={news.date} />
       <NewsHeader news={news} />
       <NewsContent handleOnKeyDown={handleOnKeyDown} />
     </article>
@@ -41,8 +41,6 @@ const TypewriterGame: React.FC = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 5000));
       setNews(NEWS_CONTENT_MOCK);
       setLoading(false);
     };
