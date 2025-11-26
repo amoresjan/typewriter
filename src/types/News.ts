@@ -1,13 +1,8 @@
-export type NewsSource = {
-  id: string;
-  name: string;
-};
-
 export type News = {
-  source: NewsSource;
-  author: string;
+  id: string;
+  date: string;
   title: string;
-  description: string;
-  url: string;
+  author: string;
+  source: string;
   content: string;
 };

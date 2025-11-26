@@ -25,7 +25,7 @@ const Words: React.FC<{
   wordsList: string[];
 }> = ({ currentWordIndex, typedWord, wordsList }) => {
   return (
-    <p className="columns-2 gap-4 text-justify leading-tight break-words">
+    <p className="columns-2 gap-4 text-justify leading-tight break-words text-xl">
       {wordsList.map((word, wordIndex) => (
         <Word
           key={wordIndex}

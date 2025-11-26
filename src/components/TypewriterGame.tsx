@@ -1,12 +1,13 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import NewsContent from "./NewsContent";
 import Header from "./Header";
 import NewsHeader from "./NewsHeader";
 import { NEWS_CONTENT_MOCK } from "../mocks/NewsContentMock";
 import { GameProvider, useGameDispatch } from "../context/GameContext";
+import { News } from "../types";
+import Loading from "./Loading";
 
-const GameLayout: React.FC = () => {
-  const news = NEWS_CONTENT_MOCK;
+const GameLayout: React.FC<{ news: News }> = ({ news }) => {
   const dispatch = useGameDispatch();
 
   const handleOnKeyDown = useCallback(
@@ -27,7 +28,7 @@ const GameLayout: React.FC = () => {
 
   return (
     <article className="mx-auto w-full max-w-5xl flex-1 px-12 pt-6">
-      <Header />
+      <Header date={news.date} />
       <NewsHeader news={news} />
       <NewsContent handleOnKeyDown={handleOnKeyDown} />
     </article>
@@ -35,9 +36,25 @@ const GameLayout: React.FC = () => {
 };
 
 const TypewriterGame: React.FC = () => {
+  const [news, setNews] = useState<News | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      setNews(NEWS_CONTENT_MOCK);
+      setLoading(false);
+    };
+
+    fetchNews();
+  }, []);
+
+  if (loading || !news) {
+    return <Loading />;
+  }
+
   return (
-    <GameProvider>
-      <GameLayout />
+    <GameProvider news={news}>
+      <GameLayout news={news} />
     </GameProvider>
   );
 };

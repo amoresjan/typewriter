@@ -3,7 +3,7 @@ import React from "react";
 import { useGameState } from "../context/GameContext";
 
 const HeaderTitle: React.FC = React.memo(() => (
-  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-6xl">
+  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-7xl">
     The Typewriter Times
   </h1>
 ));
@@ -19,19 +19,36 @@ const Stats: React.FC = React.memo(() => {
   );
 });
 
-const HeaderMeta: React.FC = React.memo(() => (
-  <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
-    <div className="w-48">amoresjan</div>
-    <p>SUNDAY, JANUARY 19, 2025</p>
-    <Stats />
-  </div>
-));
+import { User } from "../types";
 
-const Header: React.FC = React.memo(() => {
+const USER: User = {
+  id: "1",
+  username: "amoresjan",
+};
+
+const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+
+  return (
+    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
+      <div className="w-48">{USER.username}</div>
+      <p className="uppercase">{formattedDate}</p>
+      <Stats />
+    </div>
+  );
+});
+
+const Header: React.FC<{ date: string }> = React.memo(({ date }) => {
   return (
     <header className="mb-6">
       <HeaderTitle />
-      <HeaderMeta />
+      <HeaderMeta date={date} />
     </header>
   );
 });
