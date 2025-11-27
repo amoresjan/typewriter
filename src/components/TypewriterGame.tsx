@@ -41,8 +41,25 @@ const TypewriterGame: React.FC = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      setNews(NEWS_CONTENT_MOCK);
-      setLoading(false);
+      try {
+        const response = await fetch("https://typewriter-api-production.up.railway.app/api/news/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch news");
+        }
+        const data = await response.json();
+        // The API returns a list, we take the first item for now
+        if (data && data.length > 0) {
+          setNews(data[0]);
+        } else {
+            // Fallback to mock if no news found (optional, or handle error)
+             setNews(NEWS_CONTENT_MOCK);
+        }
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setNews(NEWS_CONTENT_MOCK);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchNews();
