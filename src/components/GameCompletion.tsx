@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Share1Icon, ReloadIcon } from "@radix-ui/react-icons";
-import Modal from "./common/Modal";
-import NeoButton from "./common/NeoButton";
+import Modal from "@components/common/Modal";
+import NeoButton from "@components/common/NeoButton";
 
 interface GameCompletionProps {
   wpm: number;
@@ -11,17 +11,7 @@ interface GameCompletionProps {
   onRestart?: () => void;
 }
 
-interface StatItemProps {
-  label: string;
-  value: string | number;
-}
-
-const StatItem: React.FC<StatItemProps> = ({ label, value }) => (
-  <div className="flex flex-col items-center">
-    <span className="text-3xl font-bold">{value}</span>
-    <span className="text-sm text-gray-600">{label}</span>
-  </div>
-);
+import StatItem from "@components/common/StatItem";
 
 const GameCompletion: React.FC<GameCompletionProps> = ({
   wpm,

@@ -3,13 +3,13 @@ import NewsContent from "./NewsContent";
 import Header from "./Header";
 import NewsHeader from "./NewsHeader";
 import GameCompletion from "./GameCompletion";
-import { NEWS_CONTENT_MOCK } from "../mocks/NewsContentMock";
+import { NEWS_CONTENT_MOCK } from "@mocks/NewsContentMock";
 import {
   GameProvider,
   useGameDispatch,
   useGameState,
-} from "../context/GameContext";
-import { News } from "../types";
+} from "@context/GameContext";
+import { News } from "@app-types";
 import Loading from "./Loading";
 
 const GameLayout: React.FC<{ news: News }> = ({ news }) => {

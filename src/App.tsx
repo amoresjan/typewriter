@@ -1,7 +1,7 @@
 "use client";
 
-import TypewriterGame from "./components/TypewriterGame";
-import Footer from "./components/Footer";
+import TypewriterGame from "@components/TypewriterGame";
+import Footer from "@components/Footer";
 
 export default function Home() {
   return (

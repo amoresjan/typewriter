@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useContext, useReducer } from "react";
-import { TypingState, TypingAction } from "../types";
-import { typingReducer } from "../reducers/TypingReducer";
-import { News } from "../types";
+import { TypingState, TypingAction } from "@app-types";
+import { typingReducer } from "@reducers/TypingReducer";
+import { News } from "@app-types";
 
 const GameStateContext = createContext<TypingState | null>(null);
 const GameDispatchContext = createContext<Dispatch<TypingAction> | null>(null);

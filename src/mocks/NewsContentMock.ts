@@ -1,4 +1,4 @@
-import { News } from "../types";
+import { News } from "@app-types";
 
 export const NEWS_CONTENT_MOCK: News = {
   id: "2",

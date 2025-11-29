@@ -1,5 +1,5 @@
 import React from "react";
-import { News } from "../types";
+import { News } from "@app-types";
 
 type NewsHeaderProps = {
   news: Pick<News, "title" | "author" | "source">;

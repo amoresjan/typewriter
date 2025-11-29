@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useGameState } from "../context/GameContext";
+import { useGameState } from "@context/GameContext";
 
 const HeaderTitle: React.FC = React.memo(() => (
   <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-7xl">
@@ -19,7 +19,7 @@ const Stats: React.FC = React.memo(() => {
   );
 });
 
-import { User } from "../types";
+import { User } from "@app-types";
 
 const USER: User = {
   id: "1",

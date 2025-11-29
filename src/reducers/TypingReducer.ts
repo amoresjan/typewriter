@@ -1,4 +1,4 @@
-import { TypingState, TypingAction } from "../types";
+import { TypingState, TypingAction } from "@app-types";
 
 export function typingReducer(
   state: TypingState,
@@ -107,7 +107,7 @@ function calculateWpm(
 
   const completedWordsLength = state.wordsList
     .slice(0, state.currentWordIndex)
-    .reduce((acc, word) => acc + word.length, 0);
+    .reduce((acc: number, word: string) => acc + word.length, 0);
 
   // Add spaces for completed words
   const spacesCount = state.currentWordIndex;
