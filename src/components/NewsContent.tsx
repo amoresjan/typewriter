@@ -54,7 +54,7 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
               onClick={handleOverlayClick}
               variant="secondary"
               icon={<CursorArrowIcon />}
-              className="font-helvetica text-sm font-medium"
+              className="font-sans text-sm font-medium"
             >
               Click here or press any key to focus
             </NeoButton>

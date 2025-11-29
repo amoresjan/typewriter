@@ -3,7 +3,7 @@ import React from "react";
 const Footer: React.FC = () => {
   return (
     <footer className="w-full border-t border-gray-300 bg-gray-100 py-4">
-      <div className="flex justify-end px-12 font-helvetica text-sm text-gray-600">
+      <div className="flex justify-end px-12 font-sans text-sm text-gray-600">
         <span>
           by{" "}
           <a

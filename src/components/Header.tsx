@@ -36,7 +36,7 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
   });
 
   return (
-    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-helvetica">
+    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-sans">
       <div className="w-48">{USER.username}</div>
       <p className="uppercase">{formattedDate}</p>
       <Stats />

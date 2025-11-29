@@ -37,7 +37,7 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
     <Modal className="w-full max-w-md">
       <h2 className="mb-6 font-old-english text-4xl">Congratulations!</h2>
 
-      <div className="mb-8 grid grid-cols-3 gap-4 font-helvetica">
+      <div className="mb-8 grid grid-cols-3 gap-4 font-sans">
         {[
           { label: "WPM", value: wpm },
           { label: "Accuracy", value: `${accuracy}%` },
@@ -51,7 +51,7 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
         <NeoButton
           onClick={handleShare}
           icon={<Share1Icon />}
-          className="font-helvetica"
+          className="font-sans"
         >
           {copied ? "Copied!" : "Share Result"}
         </NeoButton>
@@ -61,7 +61,7 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
             onClick={onRestart}
             variant="secondary"
             icon={<ReloadIcon />}
-            className="font-helvetica"
+            className="font-sans"
           >
             Play Again
           </NeoButton>

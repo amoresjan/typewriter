@@ -39,7 +39,7 @@ const Loading: React.FC = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <div className="font-old-english text-5xl">The Typewriter Times</div>
-      <div className="py-4 font-helvetica">
+      <div className="py-4 font-sans">
         {message}
         {dots}
       </div>
