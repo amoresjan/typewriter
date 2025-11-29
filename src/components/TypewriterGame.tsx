@@ -35,7 +35,7 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
   const isGameFinished = state.currentWordIndex >= state.wordsList.length;
 
   return (
-    <article className="mx-auto w-full max-w-5xl flex-1 px-12 pt-6">
+    <article className="mx-auto flex h-full w-full max-w-5xl flex-1 flex-col overflow-hidden px-12 pt-6">
       <Header date={news.date} />
       <NewsHeader news={news} />
       <NewsContent handleOnKeyDown={handleOnKeyDown} />

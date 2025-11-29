@@ -5,7 +5,7 @@ import Footer from "@components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-screen flex-col overflow-hidden">
       <TypewriterGame />
       <Footer />
     </div>

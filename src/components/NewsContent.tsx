@@ -43,7 +43,7 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
     };
 
     return (
-      <div className="relative mt-4">
+      <div className="relative mt-4 flex h-full flex-1 flex-col overflow-hidden">
         {!isFocused && (
           <div
             className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
