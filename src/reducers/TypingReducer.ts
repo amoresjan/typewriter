@@ -42,9 +42,15 @@ export function typingReducer(
         ((totalCharsTyped - totalErrors) / totalCharsTyped) * 100,
       );
 
+      const isLastWord = state.currentWordIndex === state.wordsList.length - 1;
+      const isWordFinished = isLastWord && typedWord === currentWord;
+
       return {
         ...state,
-        typedWord,
+        typedWord: isWordFinished ? "" : typedWord,
+        currentWordIndex: isWordFinished
+          ? state.currentWordIndex + 1
+          : state.currentWordIndex,
         activeTime: newActiveTime,
         lastKeystrokeTime: now,
         wpm,
@@ -106,7 +112,10 @@ function calculateWpm(
   // Add spaces for completed words
   const spacesCount = state.currentWordIndex;
 
-  const currentTargetWord = state.wordsList[state.currentWordIndex];
+  // If game is finished (currentWordIndex >= wordsList.length), currentTargetWord will be undefined.
+  // In that case, we don't need to compare chars for the current word.
+  const currentTargetWord = state.wordsList[state.currentWordIndex] || "";
+
   let correctCharsInCurrentWord = 0;
   const lengthToCompare = Math.min(
     currentTypedWord.length,

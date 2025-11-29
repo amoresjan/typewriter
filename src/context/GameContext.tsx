@@ -1,4 +1,4 @@
- import React, { createContext, Dispatch, useContext, useReducer } from "react";
+import React, { createContext, Dispatch, useContext, useReducer } from "react";
 import { TypingState, TypingAction } from "../types";
 import { typingReducer } from "../reducers/TypingReducer";
 import { News } from "../types";

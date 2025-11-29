@@ -1,22 +1,24 @@
 export default async function handler(request, response) {
   const cronSecret = process.env.CRON_SECRET;
-  const authHeader = request.headers['authorization'];
+  const authHeader = request.headers["authorization"];
 
   // Verify the request is coming from Vercel Cron
   if (authHeader !== `Bearer ${cronSecret}`) {
-    return response.status(401).json({ success: false, message: 'Unauthorized' });
+    return response
+      .status(401)
+      .json({ success: false, message: "Unauthorized" });
   }
 
   try {
     const backendUrl = process.env.VITE_API_URL;
     if (!backendUrl) {
-      throw new Error('VITE_API_URL is not defined');
+      throw new Error("VITE_API_URL is not defined");
     }
 
     const res = await fetch(`${backendUrl}/api/news/generate/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${cronSecret}`,
+        Authorization: `Bearer ${cronSecret}`,
       },
     });
 

@@ -37,9 +37,9 @@ const Loading: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center flex-col">
-      <div className="text-5xl font-old-english">The Typewriter Times</div>
-      <div className="font-helvetica py-4">
+    <div className="flex h-screen flex-col items-center justify-center">
+      <div className="font-old-english text-5xl">The Typewriter Times</div>
+      <div className="py-4 font-helvetica">
         {message}
         {dots}
       </div>
