@@ -1,6 +1,6 @@
 export default async function handler(request, response) {
   const cronSecret = process.env.CRON_SECRET;
-  const authHeader = request.headers.get('authorization');
+  const authHeader = request.headers['authorization'];
 
   // Verify the request is coming from Vercel Cron
   if (authHeader !== `Bearer ${cronSecret}`) {
