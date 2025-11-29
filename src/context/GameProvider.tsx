@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import { typingReducer } from "@reducers/TypingReducer";
 import { News, TypingState } from "@app-types";
 import { GameDispatchContext, GameStateContext } from "./GameContext";
@@ -40,19 +40,19 @@ export const GameProvider: React.FC<{
   const [state, dispatch] = useReducer(typingReducer, initialState);
 
   // Keep a ref to the state for the event listener
-  const stateRef = React.useRef(state);
-  React.useEffect(() => {
+  const stateRef = useRef(state);
+  useEffect(() => {
     stateRef.current = state;
   }, [state]);
 
   // Clear storage when game is finished
-  React.useEffect(() => {
+ useEffect(() => {
     if (state.currentWordIndex >= state.wordsList.length) {
       localStorage.removeItem(STORAGE_KEY);
     }
   }, [state.currentWordIndex, state.wordsList.length]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const currentState = stateRef.current;
       const isGameFinished =
@@ -63,8 +63,6 @@ export const GameProvider: React.FC<{
 
       if (!isGameFinished && hasStarted) {
         e.preventDefault();
-        e.returnValue = ""; // Trigger browser warning
-
         // Save state
         const stateToSave = {
           newsId: news.id,
