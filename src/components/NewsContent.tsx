@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 import { CursorArrowIcon } from "@radix-ui/react-icons";
-import Modal from "@components/common/Modal";
 import NeoButton from "@components/common/NeoButton";
 
 type NewsContentProps = {
