@@ -46,15 +46,14 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
       <div className="relative mt-4 flex h-full flex-1 flex-col overflow-hidden">
         {!isFocused && (
           <div
-            className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
+            className="group absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
             onClick={handleOverlayClick}
           >
-            
             <NeoButton
               onClick={handleOverlayClick}
               variant="secondary"
               icon={<CursorArrowIcon />}
-              className="font-sans text-sm font-medium"
+              className="font-sans text-sm font-medium transition-transform group-hover:-translate-y-0.5 group-hover:bg-gray-50 group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               Click here or press any key to focus
             </NeoButton>

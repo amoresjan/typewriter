@@ -4,11 +4,8 @@ import Header from "./Header";
 import NewsHeader from "./NewsHeader";
 import GameCompletion from "./GameCompletion";
 import { NEWS_CONTENT_MOCK } from "@mocks/NewsContentMock";
-import {
-  GameProvider,
-  useGameDispatch,
-  useGameState,
-} from "@context/GameContext";
+import { GameProvider } from "@context/GameProvider";
+import { useGameDispatch, useGameState } from "@context/GameContext";
 import { News } from "@app-types";
 import Loading from "./Loading";
 
