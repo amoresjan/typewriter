@@ -3,7 +3,7 @@ import React from "react";
 import { useGameState } from "@context/GameContext";
 
 const HeaderTitle: React.FC = React.memo(() => (
-  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-7xl">
+  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-5xl">
     The Typewriter Times
   </h1>
 ));
