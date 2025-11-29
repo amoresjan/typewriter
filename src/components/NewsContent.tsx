@@ -46,11 +46,11 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
     return (
       <div className="relative mt-4">
         {!isFocused && (
-          <Modal
-            className="border-none bg-transparent p-0 shadow-none"
-            overlayClassName="absolute z-10 bg-black/5 backdrop-blur-[1px]"
-            onClickOverlay={handleOverlayClick}
+          <div
+            className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
+            onClick={handleOverlayClick}
           >
+            
             <NeoButton
               onClick={handleOverlayClick}
               variant="secondary"
@@ -59,7 +59,7 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
             >
               Click here or press any key to focus
             </NeoButton>
-          </Modal>
+          </div>
         )}
         <div
           ref={containerRef}
