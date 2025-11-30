@@ -6,7 +6,7 @@ export const useNews = () => {
   return useQuery<News>({
     queryKey: ["news"],
     queryFn: async () => {
-      if (!import.meta.env.DEV) {
+      if (import.meta.env.DEV) {
         return NEWS_CONTENT_MOCK;
       }
       const response = await fetch(
