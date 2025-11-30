@@ -29,7 +29,8 @@
       "@reducers/*": ["src/reducers/*"],
       "@types/*": ["src/types/*"],
       "@app-types/*": ["src/types/*"],
-      "@app-types": ["src/types/index.ts"]
+      "@app-types": ["src/types/index.ts"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "include": ["src"]

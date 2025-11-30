@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import NewsContent from "./NewsContent";
 import Header from "./Header";
 import NewsHeader from "./NewsHeader";
@@ -8,6 +8,7 @@ import { GameProvider } from "@context/GameProvider";
 import { useGameDispatch, useGameState } from "@context/GameContext";
 import { News } from "@app-types";
 import Loading from "./Loading";
+import { useNews } from "@hooks/useNews";
 
 const GameLayout: React.FC<{ news: News }> = ({ news }) => {
   const dispatch = useGameDispatch();
@@ -50,45 +51,19 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
 };
 
 const TypewriterGame: React.FC = () => {
-  const [news, setNews] = useState<News | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchNews = async () => {
-      if (import.meta.env.DEV) {
-        console.log("Local development detected. Using mock data.");
-        setNews(NEWS_CONTENT_MOCK);
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await fetch(
-          "https://typewriter-api-production.up.railway.app/api/news/",
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch news");
-        }
-        const data = await response.json();
-        // The API returns a list, we take the first item for now
-        if (data && data.length > 0) {
-          setNews(data[0]);
-        } else {
-          // Fallback to mock if no news found (optional, or handle error)
-          setNews(NEWS_CONTENT_MOCK);
-        }
-      } catch (error) {
-        console.error("Error fetching news:", error);
-        setNews(NEWS_CONTENT_MOCK);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNews();
-  }, []);
+  const { data: news, isLoading: loading, isError } = useNews();
 
   if (loading || !news) {
     return <Loading />;
+  }
+
+  if (isError) {
+    // Fallback to mock on error after retries
+    return (
+      <GameProvider news={NEWS_CONTENT_MOCK}>
+        <GameLayout news={NEWS_CONTENT_MOCK} />
+      </GameProvider>
+    );
   }
 
   return (
