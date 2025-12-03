@@ -33,7 +33,14 @@ const CurrentWord: React.FC<{ word: string; typedWord: string }> = React.memo(
               >
                 {extraChar}
               </span>
-            ))}{" "}
+            ))}
+        <span
+          className={
+            typedWord.length >= word.length ? "cursor-blink bg-black" : ""
+          }
+        >
+          {" "}
+        </span>
       </span>
     );
   },
