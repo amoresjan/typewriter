@@ -1,5 +1,7 @@
 import { TypingState, TypingAction } from "@app-types";
 
+const AFK_THRESHOLD_MS = 5000; // 5 seconds
+
 export function typingReducer(
   state: TypingState,
   action: TypingAction,
@@ -19,17 +21,12 @@ export function typingReducer(
         state.lastKeystrokeTime !== null ? now - state.lastKeystrokeTime : 0;
 
       // If pause is less than 5 seconds, add to active time.
-      // If it's the first keystroke (lastKeystrokeTime is null), we don't add anything yet,
-      // or we can consider it 0. Let's start counting active time from the first keystroke gap?
-      // Actually, for the very first letter, activeTime is 0.
-      // For subsequent letters, we add the delta if it's < 5000ms.
       const newActiveTime =
-        state.lastKeystrokeTime !== null && timeSinceLastKeystroke < 5000
+        state.lastKeystrokeTime !== null && timeSinceLastKeystroke < AFK_THRESHOLD_MS
           ? state.activeTime + timeSinceLastKeystroke
           : state.activeTime;
 
       const typedWord = state.typedWord + action.letter;
-      const wpm = calculateWpm(state, typedWord, newActiveTime);
 
       // Accuracy Logic
       const totalCharsTyped = state.totalCharsTyped + 1;
@@ -53,7 +50,7 @@ export function typingReducer(
           : state.currentWordIndex,
         activeTime: newActiveTime,
         lastKeystrokeTime: now,
-        wpm,
+        isAfk: false, // User is typing, not AFK
         totalCharsTyped,
         totalErrors,
         accuracy,
@@ -70,39 +67,79 @@ export function typingReducer(
           state.lastKeystrokeTime !== null ? now - state.lastKeystrokeTime : 0;
 
         const newActiveTime =
-          state.lastKeystrokeTime !== null && timeSinceLastKeystroke < 5000
+          state.lastKeystrokeTime !== null && timeSinceLastKeystroke < AFK_THRESHOLD_MS
             ? state.activeTime + timeSinceLastKeystroke
             : state.activeTime;
 
         const currentWordIndex = state.currentWordIndex + 1;
-        const wpm = calculateWpm(
-          { ...state, currentWordIndex },
-          "",
-          newActiveTime,
-        );
         return {
           ...state,
           currentWordIndex,
           typedWord: "",
           activeTime: newActiveTime,
           lastKeystrokeTime: now,
-          wpm,
+          isAfk: false, // User is typing, not AFK
         };
       }
       return state;
     }
+
+    case "UPDATE_WPM": {
+      const now = Date.now();
+      const timeSinceLastKeystroke =
+        state.lastKeystrokeTime !== null ? now - state.lastKeystrokeTime : 0;
+
+      // Check if user is AFK (no typing for 5+ seconds)
+      const isNowAfk =
+        state.lastKeystrokeTime !== null &&
+        timeSinceLastKeystroke >= AFK_THRESHOLD_MS;
+
+      // If just became AFK, readjust WPM to 5 seconds ago (oldest value in history)
+      if (isNowAfk && !state.isAfk) {
+        // Get the oldest WPM in history (from ~5 seconds ago when actively typing)
+        const previousWpm =
+          state.wpmHistory.length > 0
+            ? state.wpmHistory[state.wpmHistory.length - 1]
+            : 0;
+        return {
+          ...state,
+          wpm: previousWpm,
+          wpmHistory: [previousWpm], // Reset history to the readjusted WPM
+          isAfk: true,
+          showAfkToast: true,
+        };
+      }
+
+      // If AFK, don't update WPM
+      if (isNowAfk) {
+        return state;
+      }
+
+      // Calculate current WPM including idle time (so it decreases when not typing)
+      const currentWpm = calculateWpm(state, timeSinceLastKeystroke);
+
+      // Update WPM history (keep last 5 values)
+      const newWpmHistory = [currentWpm, ...state.wpmHistory].slice(0, 5);
+
+      return {
+        ...state,
+        wpm: currentWpm,
+        wpmHistory: newWpmHistory,
+      };
+    }
+
+    case "DISMISS_AFK_TOAST":
+      return { ...state, showAfkToast: false };
 
     default:
       return state;
   }
 }
 
-function calculateWpm(
-  state: TypingState,
-  currentTypedWord: string,
-  activeTimeMs: number,
-): number {
-  const timeElapsedMinutes = activeTimeMs / 1000 / 60;
+function calculateWpm(state: TypingState, idleTimeMs: number = 0): number {
+  // Include idle time in the calculation so WPM drops when not typing
+  const totalTimeMs = state.activeTime + idleTimeMs;
+  const timeElapsedMinutes = totalTimeMs / 1000 / 60;
   if (timeElapsedMinutes === 0) return 0;
 
   const completedWordsLength = state.wordsList
@@ -113,17 +150,16 @@ function calculateWpm(
   const spacesCount = state.currentWordIndex;
 
   // If game is finished (currentWordIndex >= wordsList.length), currentTargetWord will be undefined.
-  // In that case, we don't need to compare chars for the current word.
   const currentTargetWord = state.wordsList[state.currentWordIndex] || "";
 
   let correctCharsInCurrentWord = 0;
   const lengthToCompare = Math.min(
-    currentTypedWord.length,
+    state.typedWord.length,
     currentTargetWord.length,
   );
 
   for (let i = 0; i < lengthToCompare; i++) {
-    if (currentTypedWord[i] === currentTargetWord[i]) {
+    if (state.typedWord[i] === currentTargetWord[i]) {
       correctCharsInCurrentWord++;
     }
   }
@@ -134,3 +170,4 @@ function calculateWpm(
 
   return wpm;
 }
+

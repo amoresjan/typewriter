@@ -3,6 +3,7 @@ import NewsContent from "./NewsContent";
 import Header from "./Header";
 import NewsHeader from "./NewsHeader";
 import GameCompletion from "./GameCompletion";
+import Toast from "./common/Toast";
 import { NEWS_CONTENT_MOCK } from "@mocks/NewsContentMock";
 import { GameProvider } from "@context/GameProvider";
 import { useGameDispatch, useGameState } from "@context/GameContext";
@@ -15,7 +16,13 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
 
   const handleOnKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
+      // Ignore if any modifier key is pressed (Ctrl, Meta, Alt)
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+
       if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
         dispatch({
           type: "SUBMIT_WORD",
         });
@@ -24,7 +31,6 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
       } else if (e.key.length === 1) {
         dispatch({ type: "TYPE_LETTER", letter: e.key });
       }
-      if (e.key === " ") e.preventDefault();
     },
     [dispatch],
   );
@@ -37,6 +43,13 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
       <Header date={news.date} />
       <NewsHeader news={news} />
       <NewsContent handleOnKeyDown={handleOnKeyDown} />
+      {state.showAfkToast && (
+        <Toast
+          title="AFK Detected"
+          description="WPM has been readjusted to your last active typing speed."
+          onDismiss={() => dispatch({ type: "DISMISS_AFK_TOAST" })}
+        />
+      )}
       {isGameFinished && (
         <GameCompletion
           wpm={state.wpm}

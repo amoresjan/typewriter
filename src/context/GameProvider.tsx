@@ -16,7 +16,13 @@ export const GameProvider: React.FC<{
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.newsId === news.id) {
-          return parsed.state;
+          // Merge saved state with defaults for new fields (backward compatibility)
+          return {
+            ...parsed.state,
+            wpmHistory: parsed.state.wpmHistory ?? [],
+            isAfk: parsed.state.isAfk ?? false,
+            showAfkToast: parsed.state.showAfkToast ?? false,
+          };
         }
       }
     } catch (e) {
@@ -32,6 +38,9 @@ export const GameProvider: React.FC<{
     activeTime: 0,
     lastKeystrokeTime: null,
     wpm: 0,
+    wpmHistory: [],
+    isAfk: false,
+    showAfkToast: false,
     totalCharsTyped: 0,
     totalErrors: 0,
     accuracy: 100,
@@ -44,6 +53,23 @@ export const GameProvider: React.FC<{
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  // Interval for updating WPM every second
+  const hasStarted = state.lastKeystrokeTime !== null;
+  const isGameFinished = state.currentWordIndex >= state.wordsList.length;
+  
+  useEffect(() => {
+    // Only run interval if game has started and not finished
+    if (!hasStarted || isGameFinished) {
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      dispatch({ type: "UPDATE_WPM" });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [hasStarted, isGameFinished]);
 
   // Clear storage when game is finished
  useEffect(() => {
@@ -86,3 +112,4 @@ export const GameProvider: React.FC<{
     </GameDispatchContext.Provider>
   );
 };
+
