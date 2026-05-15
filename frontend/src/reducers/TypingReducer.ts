@@ -22,7 +22,8 @@ export function typingReducer(
 
       // If pause is less than 5 seconds, add to active time.
       const newActiveTime =
-        state.lastKeystrokeTime !== null && timeSinceLastKeystroke < AFK_THRESHOLD_MS
+        state.lastKeystrokeTime !== null &&
+        timeSinceLastKeystroke < AFK_THRESHOLD_MS
           ? state.activeTime + timeSinceLastKeystroke
           : state.activeTime;
 
@@ -67,7 +68,8 @@ export function typingReducer(
           state.lastKeystrokeTime !== null ? now - state.lastKeystrokeTime : 0;
 
         const newActiveTime =
-          state.lastKeystrokeTime !== null && timeSinceLastKeystroke < AFK_THRESHOLD_MS
+          state.lastKeystrokeTime !== null &&
+          timeSinceLastKeystroke < AFK_THRESHOLD_MS
             ? state.activeTime + timeSinceLastKeystroke
             : state.activeTime;
 
@@ -170,4 +172,3 @@ function calculateWpm(state: TypingState, idleTimeMs: number = 0): number {
 
   return wpm;
 }
-

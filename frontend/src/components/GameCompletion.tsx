@@ -33,7 +33,7 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
 
   return (
     <Modal
-      className="w-full max-w-sm animate-modal-enter"
+      className="animate-modal-enter w-full max-w-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="completion-title"
@@ -44,12 +44,12 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
 
       <div className="mb-4">
         <div
-          className="font-sans text-[5rem] font-bold leading-none tabular-nums"
+          className="font-sans text-[5rem] leading-none font-bold tabular-nums"
           aria-label={`${wpm} words per minute`}
         >
           {wpm}
         </div>
-        <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+        <div className="mt-2 font-sans text-xs font-medium tracking-widest text-attribution uppercase">
           WPM
         </div>
       </div>
@@ -58,20 +58,18 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
 
       <div className="mb-8 grid grid-cols-2 gap-8">
         <div aria-label={`${accuracy}% accuracy`}>
-          <div className="font-sans text-[2.5rem] font-bold leading-none tabular-nums">
+          <div className="font-sans text-[2.5rem] leading-none font-bold tabular-nums">
             {accuracy}%
           </div>
-          <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+          <div className="mt-2 font-sans text-xs font-medium tracking-widest text-attribution uppercase">
             Accuracy
           </div>
         </div>
-        <div
-          aria-label={`${totalErrors} error${totalErrors !== 1 ? "s" : ""}`}
-        >
-          <div className="font-sans text-[2.5rem] font-bold leading-none tabular-nums">
+        <div aria-label={`${totalErrors} error${totalErrors !== 1 ? "s" : ""}`}>
+          <div className="font-sans text-[2.5rem] leading-none font-bold tabular-nums">
             {totalErrors}
           </div>
-          <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+          <div className="mt-2 font-sans text-xs font-medium tracking-widest text-attribution uppercase">
             Errors
           </div>
         </div>
@@ -82,7 +80,11 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
           {copied ? "Copied to clipboard" : "Share Result"}
         </NeoButton>
         {onRestart && (
-          <NeoButton onClick={onRestart} variant="secondary" icon={<ReloadIcon />}>
+          <NeoButton
+            onClick={onRestart}
+            variant="secondary"
+            icon={<ReloadIcon />}
+          >
             Play Again
           </NeoButton>
         )}

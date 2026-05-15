@@ -42,13 +42,13 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
         onClick={!isFocused ? handleOverlayClick : undefined}
       >
         {!isFocused && (
-          <p className="pointer-events-none absolute inset-0 z-10 flex select-none items-center justify-center italic text-sm text-ink">
+          <p className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center text-sm text-ink italic select-none">
             press any key to begin
           </p>
         )}
         <div
           ref={containerRef}
-          className={`grid overflow-hidden outline-none transition-opacity duration-200 ${!isFocused ? "opacity-20" : "opacity-100"}`}
+          className={`grid overflow-hidden transition-opacity duration-200 outline-none ${!isFocused ? "opacity-20" : "opacity-100"}`}
           tabIndex={0}
           onKeyDown={handleOnKeyDown}
           onFocus={handleFocus}

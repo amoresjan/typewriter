@@ -51,7 +51,7 @@ const Toast: React.FC<ToastProps> = ({
       role="status"
       aria-live="polite"
       aria-atomic="true"
-      className={`fixed bottom-16 right-4 z-50 w-80 rounded-lg border-2 border-ink bg-paper p-4 font-sans shadow-[4px_4px_0px_0px_#0f0e0c] ${
+      className={`fixed right-4 bottom-16 z-50 w-80 rounded-lg border-2 border-ink bg-paper p-4 font-sans shadow-[4px_4px_0px_0px_#0f0e0c] ${
         isLeaving ? "animate-slide-out" : "animate-slide-in"
       }`}
     >
@@ -67,7 +67,7 @@ const Toast: React.FC<ToastProps> = ({
         <button
           onClick={triggerDismiss}
           aria-label="Dismiss"
-          className="-mr-1 -mt-0.5 shrink-0 p-1 text-base leading-none text-attribution transition-colors hover:text-ink active:opacity-60 focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
+          className="-mt-0.5 -mr-1 shrink-0 p-1 text-base leading-none text-attribution transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:opacity-60"
         >
           ×
         </button>

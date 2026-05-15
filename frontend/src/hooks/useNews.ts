@@ -10,7 +10,8 @@ export const useNews = () => {
       if (!apiUrl && import.meta.env.DEV) {
         return NEWS_CONTENT_MOCK;
       }
-      const baseUrl = apiUrl ?? "https://typewriter-api-production.up.railway.app";
+      const baseUrl =
+        apiUrl ?? "https://typewriter-api-production.up.railway.app";
       const response = await fetch(`${baseUrl}/api/news/`);
       if (!response.ok) {
         throw new Error("Failed to fetch news");
@@ -25,4 +26,3 @@ export const useNews = () => {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 };
-  

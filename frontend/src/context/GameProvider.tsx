@@ -57,7 +57,7 @@ export const GameProvider: React.FC<{
   // Interval for updating WPM every second
   const hasStarted = state.lastKeystrokeTime !== null;
   const isGameFinished = state.currentWordIndex >= state.wordsList.length;
-  
+
   useEffect(() => {
     // Only run interval if game has started and not finished
     if (!hasStarted || isGameFinished) {
@@ -72,7 +72,7 @@ export const GameProvider: React.FC<{
   }, [hasStarted, isGameFinished]);
 
   // Clear storage when game is finished
- useEffect(() => {
+  useEffect(() => {
     if (state.currentWordIndex >= state.wordsList.length) {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -112,4 +112,3 @@ export const GameProvider: React.FC<{
     </GameDispatchContext.Provider>
   );
 };
-
