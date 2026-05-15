@@ -154,6 +154,18 @@ App
 
 ---
 
+## CORS & Credentials
+
+The frontend (Vercel) and backend (Railway) are on different origins. For httpOnly cookies to be sent cross-origin:
+
+- **Backend:** set `CORS_ALLOW_CREDENTIALS = True` and add the Vercel domain to `CORS_ALLOWED_ORIGINS` in Django settings
+- **Frontend:** all `fetch` calls to the backend must include `credentials: 'include'`
+- **Backend cookie settings:** set `SameSite=None; Secure` on the JWT cookies so browsers allow them in cross-origin requests
+
+Django's built-in `User` model is used — no custom user model needed.
+
+---
+
 ## Package additions
 
 **Backend:**
