@@ -1,3 +1,9 @@
+# Node
+node_modules
+dist
+dist-ssr
+*.local
+
 # Logs
 logs
 *.log
@@ -7,12 +13,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Bun
+bun.lock
 
-# Editor directories and files
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+env/
+ENV/
+
+# Django
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+
+# Env files
+.env
+.env*.local
+
+# Editor / OS
 .idea
 .DS_Store
 *.suo
@@ -20,6 +43,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Bun
-bun.lock
+.vscode/

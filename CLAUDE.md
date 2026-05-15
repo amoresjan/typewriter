@@ -2,7 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Repository Structure
+
+This is a monorepo containing the frontend and backend for The Typewriter Times.
+
+- `frontend/` — React 18 + TypeScript + Vite + Tailwind CSS v4
+- `backend/` — Django 4.2 + Django Rest Framework, Python 3.10
+
 ## Commands
+
+### Frontend (run from repo root)
 
 ```bash
 npm run dev        # Start Vite dev server (localhost:5173)
@@ -11,11 +20,18 @@ npm run lint       # Run ESLint
 npm run preview    # Preview production build locally
 ```
 
-There are no tests configured in this project.
+### Backend (run from repo root)
+
+```bash
+make dev-backend      # Start Django dev server (localhost:8000)
+make migrate          # Run Django migrations
+make generate-news    # Trigger AI news generation locally
+make install-backend  # Create venv and install Python dependencies
+```
 
 ## Architecture
 
-**The Typewriter Times** is a vintage newspaper-themed typing speed app. React 18 + TypeScript + Vite + Tailwind CSS v4.
+**The Typewriter Times** is a vintage newspaper-themed typing speed app.
 
 ### Data Flow
 
@@ -25,7 +41,7 @@ There are no tests configured in this project.
 4. All keyboard input is handled in `GameLayout.handleOnKeyDown`, which dispatches actions to `typingReducer`.
 5. A 1-second interval dispatches `UPDATE_WPM` while the game is active, enabling real-time WPM display and AFK detection.
 
-### State Machine (`TypingReducer.ts`)
+### State Machine (`frontend/src/reducers/TypingReducer.ts`)
 
 The entire game state is a single `TypingState` object managed by `typingReducer`:
 
@@ -39,22 +55,27 @@ Game completion is detected when `currentWordIndex >= wordsList.length`.
 
 ### Path Aliases
 
-Configured in `vite.config.ts`:
+Configured in `frontend/vite.config.ts`:
 
 | Alias | Path |
 |---|---|
-| `@components` | `src/components` |
-| `@context` | `src/context` |
-| `@hooks` | `src/hooks` |
-| `@mocks` | `src/mocks` |
-| `@reducers` | `src/reducers` |
-| `@app-types` | `src/types` |
+| `@components` | `frontend/src/components` |
+| `@context` | `frontend/src/context` |
+| `@hooks` | `frontend/src/hooks` |
+| `@mocks` | `frontend/src/mocks` |
+| `@reducers` | `frontend/src/reducers` |
+| `@app-types` | `frontend/src/types` |
 
 ### Backend & Cron
 
 - Production news comes from `https://typewriter-api-production.up.railway.app/api/news/`.
-- `api/cron.js` is a Vercel serverless function called daily at 16:00 UTC (configured in `vercel.json`). It hits the backend's `/api/news/generate/` endpoint. Requires `CRON_SECRET` and `VITE_API_URL` environment variables.
+- Daily news generation runs as a Railway cron job: `0 16 * * *` → `python manage.py generate_news`. Configured in the Railway dashboard under the backend service settings.
 
 ### Persistence
 
 Game progress is saved to `localStorage` under key `typewriter_game_state` as `{ newsId, state }` on `beforeunload`. State is restored when the same `news.id` is loaded. Storage is cleared on game completion.
+
+## Deployment
+
+- **Frontend**: Vercel. Root Directory set to `frontend` in the Vercel dashboard.
+- **Backend**: Railway. Root Directory set to `backend` in the Railway dashboard. Docker-based deployment using `backend/Dockerfile`.
