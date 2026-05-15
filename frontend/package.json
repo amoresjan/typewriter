@@ -15,8 +15,7 @@
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^3.0.1",
-    "typewriter": "file:"
+    "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
