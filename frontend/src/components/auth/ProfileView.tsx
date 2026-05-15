@@ -1,4 +1,5 @@
 import React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@context/AuthContext";
 import { useProfile } from "@hooks/useProfile";
 import NeoButton from "@components/common/NeoButton";
@@ -11,9 +12,11 @@ interface ProfileViewProps {
 export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
   const { user, logout } = useAuth();
   const { data: profile, isLoading, isError } = useProfile(true);
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     await logout();
+    queryClient.removeQueries({ queryKey: ["profile"] });
     onClose();
   };
 
@@ -31,7 +34,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
       {profile && (
         <div className="grid grid-cols-3 gap-4">
           <StatItem label="Best WPM" value={profile.best_wpm} />
-          <StatItem label="Avg Accuracy" value={`${profile.avg_accuracy}%`} />
+          <StatItem label="Avg Accuracy" value={`${Math.round(profile.avg_accuracy)}%`} />
           <StatItem label="Games" value={profile.total_games} />
         </div>
       )}

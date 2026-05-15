@@ -20,5 +20,6 @@ export const useProfile = (enabled: boolean) => {
       return res.json() as Promise<Profile>;
     },
     enabled,
+    staleTime: 1000 * 60 * 5,
   });
 };
