@@ -36,7 +36,7 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
     <>
       <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-ink font-sans text-sm">
         <button
-          className="w-48 text-left hover:underline"
+          className="w-48 cursor-pointer text-left hover:underline"
           onClick={() => setModalOpen(true)}
         >
           {user?.username ?? "Guest"}
