@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-
 import { useGameState } from "@context/GameContext";
 import { useAuth } from "@context/AuthContext";
 import { AuthModal } from "@components/auth/AuthModal";
+import { DatePicker } from "@components/DatePicker";
 
 const HeaderTitle: React.FC = React.memo(() => (
   <h1 className="border-b border-ink pb-4 text-center font-old-english text-5xl">
@@ -13,7 +13,6 @@ const HeaderTitle: React.FC = React.memo(() => (
 const Stats: React.FC = React.memo(() => {
   const state = useGameState();
   const { wpm, accuracy } = state;
-
   return (
     <p className="w-48 text-right tabular-nums">
       {wpm} WPM · {accuracy}%
@@ -21,16 +20,12 @@ const Stats: React.FC = React.memo(() => {
   );
 });
 
-const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
+const HeaderMeta: React.FC<{
+  date: string;
+  onDateSelect: (date: string | undefined) => void;
+}> = React.memo(({ date, onDateSelect }) => {
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 
   return (
     <>
@@ -41,7 +36,7 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
         >
           {user?.username ?? "Guest"}
         </button>
-        <p className="uppercase">{formattedDate}</p>
+        <DatePicker newsDate={date} onSelect={onDateSelect} />
         <Stats />
       </div>
       {modalOpen && <AuthModal onClose={() => setModalOpen(false)} />}
@@ -49,11 +44,14 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
   );
 });
 
-const Header: React.FC<{ date: string }> = React.memo(({ date }) => {
+const Header: React.FC<{
+  date: string;
+  onDateSelect: (date: string | undefined) => void;
+}> = React.memo(({ date, onDateSelect }) => {
   return (
     <header className="mb-6">
       <HeaderTitle />
-      <HeaderMeta date={date} />
+      <HeaderMeta date={date} onDateSelect={onDateSelect} />
     </header>
   );
 });

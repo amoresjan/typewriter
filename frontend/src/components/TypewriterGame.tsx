@@ -11,21 +11,20 @@ import { News } from "@app-types";
 import Loading from "./Loading";
 import { useNews } from "@hooks/useNews";
 
-const GameLayout: React.FC<{ news: News }> = ({ news }) => {
+interface GameLayoutProps {
+  news: News;
+  onDateSelect: (date: string | undefined) => void;
+}
+
+const GameLayout: React.FC<GameLayoutProps> = ({ news, onDateSelect }) => {
   const dispatch = useGameDispatch();
 
   const handleOnKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
-      // Ignore if any modifier key is pressed (Ctrl, Meta, Alt)
-      if (e.ctrlKey || e.metaKey || e.altKey) {
-        return;
-      }
-
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
-        dispatch({
-          type: "SUBMIT_WORD",
-        });
+        dispatch({ type: "SUBMIT_WORD" });
       } else if (e.key === "Backspace") {
         dispatch({ type: "DELETE_LETTER" });
       } else if (e.key.length === 1) {
@@ -40,7 +39,7 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
 
   return (
     <article className="mx-auto flex h-full w-full max-w-5xl flex-1 flex-col overflow-hidden px-12 pt-6">
-      <Header date={news.date} />
+      <Header date={news.date} onDateSelect={onDateSelect} />
       <NewsHeader news={news} />
       <NewsContent handleOnKeyDown={handleOnKeyDown} />
       {state.showAfkToast && (
@@ -63,25 +62,38 @@ const GameLayout: React.FC<{ news: News }> = ({ news }) => {
   );
 };
 
-const TypewriterGame: React.FC = () => {
-  const { data: news, isLoading: loading, isError } = useNews();
+interface TypewriterGameProps {
+  selectedDate: string | undefined;
+  onDateSelect: (date: string | undefined) => void;
+}
 
-  if (loading || !news) {
-    return <Loading />;
-  }
+const TypewriterGame: React.FC<TypewriterGameProps> = ({
+  selectedDate,
+  onDateSelect,
+}) => {
+  const { data: news, isLoading, isError, error } = useNews(selectedDate);
+
+  if (isLoading || !news) return <Loading />;
 
   if (isError) {
-    // Fallback to mock on error after retries
+    const msg = error instanceof Error ? error.message : "";
+    if (selectedDate && msg === "No article for this date") {
+      return (
+        <div className="flex flex-1 items-center justify-center font-sans text-attribution">
+          No article available for this date.
+        </div>
+      );
+    }
     return (
       <GameProvider news={NEWS_CONTENT_MOCK}>
-        <GameLayout news={NEWS_CONTENT_MOCK} />
+        <GameLayout news={NEWS_CONTENT_MOCK} onDateSelect={onDateSelect} />
       </GameProvider>
     );
   }
 
   return (
     <GameProvider news={news}>
-      <GameLayout news={news} />
+      <GameLayout news={news} onDateSelect={onDateSelect} />
     </GameProvider>
   );
 };
