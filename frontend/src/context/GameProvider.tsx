@@ -98,7 +98,7 @@ export const GameProvider: React.FC<{
     }).catch(() => {
       // best-effort — silently ignore failures
     });
-  }, [isGameFinished]);
+  }, [isGameFinished, news.id]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
