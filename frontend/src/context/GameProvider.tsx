@@ -2,11 +2,14 @@ import React, { useEffect, useReducer, useRef } from "react";
 import { typingReducer } from "@reducers/TypingReducer";
 import { News, TypingState } from "@app-types";
 import { GameDispatchContext, GameStateContext } from "./GameContext";
+import { useAuth } from "./AuthContext";
+import { getBaseUrl } from "../lib/api";
 
 export const GameProvider: React.FC<{
   children: React.ReactNode;
   news: News;
 }> = ({ children, news }) => {
+  const { user } = useAuth();
   const wordsList = news.content.split(/\s+/);
   const STORAGE_KEY = "typewriter_game_state";
 
@@ -71,12 +74,24 @@ export const GameProvider: React.FC<{
     return () => clearInterval(intervalId);
   }, [hasStarted, isGameFinished]);
 
-  // Clear storage when game is finished
+  // Clear storage when game is finished and sync result to backend if logged in
   useEffect(() => {
-    if (state.currentWordIndex >= state.wordsList.length) {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  }, [state.currentWordIndex, state.wordsList.length]);
+    if (!isGameFinished) return;
+    localStorage.removeItem(STORAGE_KEY);
+    if (!user) return;
+    fetch(`${getBaseUrl()}/api/results/`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        news_id: news.id,
+        wpm: state.wpm,
+        accuracy: state.accuracy,
+      }),
+    }).catch(() => {
+      // best-effort — silently ignore failures
+    });
+  }, [isGameFinished]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
