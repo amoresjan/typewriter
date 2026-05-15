@@ -60,7 +60,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!res.ok) {
       const err = await res.json();
       const errData = err as { username?: string[]; error?: string };
-      throw new Error(errData.username?.[0] ?? errData.error ?? "Registration failed");
+      throw new Error(
+        errData.username?.[0] ?? errData.error ?? "Registration failed",
+      );
     }
     const data = (await res.json()) as User;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));

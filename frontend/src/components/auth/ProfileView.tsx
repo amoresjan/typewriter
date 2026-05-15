@@ -34,7 +34,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
       {profile && (
         <div className="grid grid-cols-3 gap-4">
           <StatItem label="Best WPM" value={profile.best_wpm} />
-          <StatItem label="Avg Accuracy" value={`${Math.round(profile.avg_accuracy)}%`} />
+          <StatItem label="Avg Accuracy" value={`${profile.avg_accuracy}%`} />
           <StatItem label="Games" value={profile.total_games} />
         </div>
       )}

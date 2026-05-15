@@ -34,9 +34,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <h2 className="font-old-english text-2xl">Sign In</h2>
-      {error && (
-        <p className="font-sans text-sm text-press-red">{error}</p>
-      )}
+      {error && <p className="font-sans text-sm text-press-red">{error}</p>}
       <input
         type="text"
         placeholder="Username"

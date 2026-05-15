@@ -27,14 +27,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     timeZone: "UTC",
   });
 
-  const handleSelect = useCallback((date: Date | undefined) => {
-    setOpen(false);
-    if (!date) {
-      onSelect(undefined);
-      return;
-    }
-    onSelect(format(date, "MM-dd-yyyy"));
-  }, [onSelect]);
+  const handleSelect = useCallback(
+    (date: Date | undefined) => {
+      setOpen(false);
+      if (!date) {
+        onSelect(undefined);
+        return;
+      }
+      onSelect(format(date, "MM-dd-yyyy"));
+    },
+    [onSelect],
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

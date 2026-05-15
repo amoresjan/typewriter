@@ -97,15 +97,18 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        from django.db.models import Max, Avg
+        from django.db.models import Max, Avg, Count
         from results.models import GameResult
 
-        qs = GameResult.objects.filter(user=request.user)
-        stats = qs.aggregate(best_wpm=Max('wpm'), avg_accuracy=Avg('accuracy'))
+        stats = GameResult.objects.filter(user=request.user).aggregate(
+            best_wpm=Max('wpm'),
+            avg_accuracy=Avg('accuracy'),
+            total_games=Count('id'),
+        )
         return Response({
             'id': str(request.user.id),
             'username': request.user.username,
             'best_wpm': stats['best_wpm'] or 0,
             'avg_accuracy': round(stats['avg_accuracy'] or 0),
-            'total_games': qs.count(),
+            'total_games': stats['total_games'],
         })

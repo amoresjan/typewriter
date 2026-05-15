@@ -57,6 +57,11 @@ export const GameProvider: React.FC<{
     stateRef.current = state;
   }, [state]);
 
+  const userRef = useRef(user);
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
+
   // Interval for updating WPM every second
   const hasStarted = state.lastKeystrokeTime !== null;
   const isGameFinished = state.currentWordIndex >= state.wordsList.length;
@@ -78,15 +83,17 @@ export const GameProvider: React.FC<{
   useEffect(() => {
     if (!isGameFinished) return;
     localStorage.removeItem(STORAGE_KEY);
-    if (!user) return;
+    const currentUser = userRef.current;
+    if (!currentUser) return;
+    const currentState = stateRef.current;
     fetch(`${getBaseUrl()}/api/results/`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         news_id: news.id,
-        wpm: state.wpm,
-        accuracy: state.accuracy,
+        wpm: currentState.wpm,
+        accuracy: currentState.accuracy,
       }),
     }).catch(() => {
       // best-effort — silently ignore failures
