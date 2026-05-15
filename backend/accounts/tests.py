@@ -51,3 +51,63 @@ class LoginTests(APITestCase):
             'password': 'wrongpass',
         }, format='json')
         self.assertEqual(response.status_code, 401)
+
+
+class LogoutTests(APITestCase):
+    def setUp(self):
+        user = User.objects.create_user(username='testuser', password='testpass123')
+        login_response = self.client.post('/api/auth/login/', {
+            'username': 'testuser',
+            'password': 'testpass123',
+        }, format='json')
+        self.client.cookies = login_response.cookies
+
+    def test_logout_clears_cookies(self):
+        response = self.client.post('/api/auth/logout/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.cookies['access_token'].value, '')
+        self.assertEqual(response.cookies['refresh_token'].value, '')
+
+
+class RefreshTests(APITestCase):
+    def setUp(self):
+        User.objects.create_user(username='testuser', password='testpass123')
+        login_response = self.client.post('/api/auth/login/', {
+            'username': 'testuser',
+            'password': 'testpass123',
+        }, format='json')
+        self.client.cookies = login_response.cookies
+
+    def test_refresh_with_valid_cookie_returns_user(self):
+        response = self.client.post('/api/auth/refresh/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['username'], 'testuser')
+        self.assertIn('access_token', response.cookies)
+
+    def test_refresh_without_cookie_returns_401(self):
+        self.client.cookies.clear()
+        response = self.client.post('/api/auth/refresh/')
+        self.assertEqual(response.status_code, 401)
+
+
+class ProfileTests(APITestCase):
+    def setUp(self):
+        User.objects.create_user(username='testuser', password='testpass123')
+        login_response = self.client.post('/api/auth/login/', {
+            'username': 'testuser',
+            'password': 'testpass123',
+        }, format='json')
+        self.client.cookies = login_response.cookies
+
+    def test_profile_returns_stats_for_authenticated_user(self):
+        response = self.client.get('/api/auth/profile/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['username'], 'testuser')
+        self.assertEqual(response.data['best_wpm'], 0)
+        self.assertEqual(response.data['avg_accuracy'], 0)
+        self.assertEqual(response.data['total_games'], 0)
+
+    def test_profile_returns_401_when_not_authenticated(self):
+        self.client.cookies.clear()
+        response = self.client.get('/api/auth/profile/')
+        self.assertEqual(response.status_code, 401)
