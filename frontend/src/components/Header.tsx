@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useGameState } from "@context/GameContext";
+import { useAuth } from "@context/AuthContext";
+import { AuthModal } from "@components/auth/AuthModal";
 
 const HeaderTitle: React.FC = React.memo(() => (
   <h1 className="border-b border-ink pb-4 text-center font-old-english text-5xl">
@@ -19,14 +21,9 @@ const Stats: React.FC = React.memo(() => {
   );
 });
 
-import { User } from "@app-types";
-
-const USER: User = {
-  id: "1",
-  username: "amoresjan",
-};
-
 const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
+  const { user } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -36,11 +33,19 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
   });
 
   return (
-    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-ink font-sans text-sm">
-      <div className="w-48">{USER.username}</div>
-      <p className="uppercase">{formattedDate}</p>
-      <Stats />
-    </div>
+    <>
+      <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-ink font-sans text-sm">
+        <button
+          className="w-48 text-left hover:underline"
+          onClick={() => setModalOpen(true)}
+        >
+          {user?.username ?? "Guest"}
+        </button>
+        <p className="uppercase">{formattedDate}</p>
+        <Stats />
+      </div>
+      {modalOpen && <AuthModal onClose={() => setModalOpen(false)} />}
+    </>
   );
 });
 
