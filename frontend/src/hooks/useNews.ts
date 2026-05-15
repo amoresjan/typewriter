@@ -1,18 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { NEWS_CONTENT_MOCK } from "@mocks/NewsContentMock";
 import { News } from "@app-types";
+import { getBaseUrl } from "../lib/api";
 
 export const useNews = () => {
   return useQuery<News>({
     queryKey: ["news"],
     queryFn: async () => {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      if (!apiUrl && import.meta.env.DEV) {
+      if (!import.meta.env.VITE_API_URL && import.meta.env.DEV) {
         return NEWS_CONTENT_MOCK;
       }
-      const baseUrl =
-        apiUrl ?? "https://typewriter-api-production.up.railway.app";
-      const response = await fetch(`${baseUrl}/api/news/`);
+      const response = await fetch(`${getBaseUrl()}/api/news/`);
       if (!response.ok) {
         throw new Error("Failed to fetch news");
       }
