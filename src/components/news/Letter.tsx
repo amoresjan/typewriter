@@ -15,9 +15,11 @@ const Letter: React.FC<LetterProps> = React.memo(
       <span
         className={twMerge(
           clsx(
-            isCurrentLetter && "cursor-blink bg-black text-white",
-            isIncorrect && "bg-red-400 text-white decoration-red-400",
-            !typedLetter ? "text-gray-300" : "text-black",
+            isCurrentLetter && "cursor-blink bg-ink text-paper",
+            isIncorrect && "bg-press-red text-paper",
+            !isCurrentLetter &&
+              !isIncorrect &&
+              (!typedLetter ? "text-ash-muted" : "text-ink"),
           ),
         )}
       >

@@ -1,9 +1,8 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-interface ModalProps {
+interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
   overlayClassName?: string;
   onClickOverlay?: () => void;
 }
@@ -13,6 +12,7 @@ const Modal: React.FC<ModalProps> = ({
   className,
   overlayClassName,
   onClickOverlay,
+  ...contentProps
 }) => {
   return (
     <div
@@ -24,10 +24,11 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={twMerge(
-          "rounded-lg border-2 border-black bg-white p-8 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+          "rounded-lg border-2 border-ink bg-paper p-8 text-center shadow-[4px_4px_0px_0px_#0f0e0c]",
           className,
         )}
         onClick={(e) => e.stopPropagation()}
+        {...contentProps}
       >
         {children}
       </div>

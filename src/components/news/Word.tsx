@@ -2,7 +2,7 @@ import React from "react";
 import Letter from "@components/news/Letter";
 
 const TypedWord: React.FC<{ word: string }> = React.memo(({ word }) => {
-  return <span className="text-black">{word} </span>;
+  return <span className="text-ink">{word} </span>;
 });
 
 const CurrentWord: React.FC<{ word: string; typedWord: string }> = React.memo(
@@ -29,14 +29,14 @@ const CurrentWord: React.FC<{ word: string; typedWord: string }> = React.memo(
             .map((extraChar, extraIndex) => (
               <span
                 key={`extra-${extraIndex}`}
-                className="bg-red-400 text-white decoration-red-800"
+                className="bg-press-red text-paper"
               >
                 {extraChar}
               </span>
             ))}
         <span
           className={
-            typedWord.length >= word.length ? "cursor-blink bg-black" : ""
+            typedWord.length >= word.length ? "cursor-blink bg-ink" : ""
           }
         >
           {" "}
@@ -47,7 +47,7 @@ const CurrentWord: React.FC<{ word: string; typedWord: string }> = React.memo(
 );
 
 const UntypedWord: React.FC<{ word: string }> = React.memo(({ word }) => {
-  return <span className="text-gray-300">{word} </span>;
+  return <span className="text-ash-muted">{word} </span>;
 });
 
 const Word: React.FC<{

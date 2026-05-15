@@ -3,7 +3,7 @@ import React from "react";
 import { useGameState } from "@context/GameContext";
 
 const HeaderTitle: React.FC = React.memo(() => (
-  <h1 className="border-b-[1px] border-black pb-4 text-center font-old-english text-5xl">
+  <h1 className="border-b border-ink pb-4 text-center font-old-english text-5xl">
     The Typewriter Times
   </h1>
 ));
@@ -14,7 +14,7 @@ const Stats: React.FC = React.memo(() => {
 
   return (
     <p className="w-48 text-right tabular-nums">
-      {wpm} WPM | {accuracy}%
+      {wpm} WPM · {accuracy}%
     </p>
   );
 });
@@ -36,7 +36,7 @@ const HeaderMeta: React.FC<{ date: string }> = React.memo(({ date }) => {
   });
 
   return (
-    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-black font-sans">
+    <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-ink font-sans text-sm">
       <div className="w-48">{USER.username}</div>
       <p className="uppercase">{formattedDate}</p>
       <Stats />

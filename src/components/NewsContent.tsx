@@ -1,13 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { twMerge } from "tailwind-merge";
-import { CursorArrowIcon } from "@radix-ui/react-icons";
-import NeoButton from "@components/common/NeoButton";
+import NewsText from "@components/news/NewsText";
 
 type NewsContentProps = {
   handleOnKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
-
-import NewsText from "@components/news/NewsText";
 
 const NewsContent: React.FC<NewsContentProps> = React.memo(
   ({ handleOnKeyDown }) => {
@@ -15,7 +11,6 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      // Auto-focus on mount
       containerRef.current?.focus();
     }, []);
 
@@ -37,34 +32,23 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
-
     const handleOverlayClick = () => {
       containerRef.current?.focus();
     };
 
     return (
-      <div className="relative mt-4 flex h-full flex-1 flex-col overflow-hidden">
+      <div
+        className="relative mt-4 flex h-full flex-1 cursor-pointer flex-col overflow-hidden"
+        onClick={!isFocused ? handleOverlayClick : undefined}
+      >
         {!isFocused && (
-          <div
-            className="group absolute inset-0 z-10 flex cursor-pointer items-center justify-center transition-all duration-200"
-            onClick={handleOverlayClick}
-          >
-            <NeoButton
-              onClick={handleOverlayClick}
-              variant="secondary"
-              icon={<CursorArrowIcon />}
-              className="font-sans text-sm font-medium transition-transform group-hover:-translate-y-0.5 group-hover:bg-gray-50 group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            >
-              Click here or press any key to focus
-            </NeoButton>
-          </div>
+          <p className="pointer-events-none absolute inset-0 z-10 flex select-none items-center justify-center italic text-sm text-ink">
+            press any key to begin
+          </p>
         )}
         <div
           ref={containerRef}
-          className={twMerge(
-            "grid overflow-hidden transition-all duration-200 outline-none",
-            !isFocused && "blur-[1.5px] filter",
-          )}
+          className={`grid overflow-hidden outline-none transition-opacity duration-200 ${!isFocused ? "opacity-20" : "opacity-100"}`}
           tabIndex={0}
           onKeyDown={handleOnKeyDown}
           onFocus={handleFocus}

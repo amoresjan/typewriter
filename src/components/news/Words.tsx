@@ -13,7 +13,7 @@ const Words: React.FC<WordsProps> = ({
   wordsList,
 }) => {
   return (
-    <p className="columns-2 gap-4 text-justify text-xl leading-tight break-words">
+    <p className="columns-2 gap-8 break-words text-justify text-base leading-[1.625] text-ink [column-rule:1px_solid_var(--color-ash-border)]">
       {wordsList.map((word, wordIndex) => (
         <Word
           key={wordIndex}

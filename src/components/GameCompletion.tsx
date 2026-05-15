@@ -11,8 +11,6 @@ interface GameCompletionProps {
   onRestart?: () => void;
 }
 
-import StatItem from "@components/common/StatItem";
-
 const GameCompletion: React.FC<GameCompletionProps> = ({
   wpm,
   accuracy,
@@ -23,7 +21,7 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const text = `😱 ${newsTitle} 😱\n\nI typed this news at ${wpm} WPM with ${accuracy}% accuracy on Typewriter!\n\nhttps://typewriter.amoresjan.dev`;
+    const text = `I typed "${newsTitle}" on The Typewriter Times. ${wpm} WPM, ${accuracy}% accuracy.\n\nhttps://typewriter.amoresjan.dev`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -34,35 +32,57 @@ const GameCompletion: React.FC<GameCompletionProps> = ({
   };
 
   return (
-    <Modal className="w-full max-w-md">
-      <h2 className="mb-6 font-old-english text-4xl">Congratulations!</h2>
+    <Modal
+      className="w-full max-w-sm animate-modal-enter"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="completion-title"
+    >
+      <h2 id="completion-title" className="mb-6 font-old-english text-2xl">
+        Edition Complete
+      </h2>
 
-      <div className="mb-8 grid grid-cols-3 gap-4 font-sans">
-        {[
-          { label: "WPM", value: wpm },
-          { label: "Accuracy", value: `${accuracy}%` },
-          { label: "Errors", value: totalErrors },
-        ].map((stat) => (
-          <StatItem key={stat.label} label={stat.label} value={stat.value} />
-        ))}
+      <div className="mb-4">
+        <div
+          className="font-sans text-[5rem] font-bold leading-none tabular-nums"
+          aria-label={`${wpm} words per minute`}
+        >
+          {wpm}
+        </div>
+        <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+          WPM
+        </div>
+      </div>
+
+      <div className="mb-4 border-t border-ash-border" />
+
+      <div className="mb-8 grid grid-cols-2 gap-8">
+        <div aria-label={`${accuracy}% accuracy`}>
+          <div className="font-sans text-[2.5rem] font-bold leading-none tabular-nums">
+            {accuracy}%
+          </div>
+          <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+            Accuracy
+          </div>
+        </div>
+        <div
+          aria-label={`${totalErrors} error${totalErrors !== 1 ? "s" : ""}`}
+        >
+          <div className="font-sans text-[2.5rem] font-bold leading-none tabular-nums">
+            {totalErrors}
+          </div>
+          <div className="mt-2 font-sans text-xs font-medium uppercase tracking-widest text-attribution">
+            Errors
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
-        <NeoButton
-          onClick={handleShare}
-          icon={<Share1Icon />}
-          className="font-sans"
-        >
-          {copied ? "Copied!" : "Share Result"}
+        <NeoButton autoFocus onClick={handleShare} icon={<Share1Icon />}>
+          {copied ? "Copied to clipboard" : "Share Result"}
         </NeoButton>
-
         {onRestart && (
-          <NeoButton
-            onClick={onRestart}
-            variant="secondary"
-            icon={<ReloadIcon />}
-            className="font-sans"
-          >
+          <NeoButton onClick={onRestart} variant="secondary" icon={<ReloadIcon />}>
             Play Again
           </NeoButton>
         )}

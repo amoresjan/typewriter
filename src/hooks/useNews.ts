@@ -6,12 +6,12 @@ export const useNews = () => {
   return useQuery<News>({
     queryKey: ["news"],
     queryFn: async () => {
-      if (import.meta.env.DEV) {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      if (!apiUrl && import.meta.env.DEV) {
         return NEWS_CONTENT_MOCK;
       }
-      const response = await fetch(
-        "https://typewriter-api-production.up.railway.app/api/news/",
-      );
+      const baseUrl = apiUrl ?? "https://typewriter-api-production.up.railway.app";
+      const response = await fetch(`${baseUrl}/api/news/`);
       if (!response.ok) {
         throw new Error("Failed to fetch news");
       }

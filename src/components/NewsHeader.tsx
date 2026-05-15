@@ -8,10 +8,10 @@ type NewsHeaderProps = {
 const NewsHeader: React.FC<NewsHeaderProps> = React.memo(({ news }) => {
   return (
     <div className="mb-4">
-      <h2 className="mb-1 text-2xl font-semibold">{news.title}</h2>
-      <h3 className="text-[#6e6e6e]">
-        {news.author} - {news.source}
-      </h3>
+      <h2 className="mb-1 text-2xl font-semibold leading-tight">{news.title}</h2>
+      <p className="font-sans text-sm font-medium text-attribution">
+        {news.author}, {news.source}
+      </p>
     </div>
   );
 });

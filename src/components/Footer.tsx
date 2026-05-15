@@ -2,15 +2,15 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full border-t border-gray-300 bg-gray-100 py-2">
-      <div className="flex justify-end px-12 font-sans text-sm text-gray-600">
+    <footer className="w-full border-t border-ash-border bg-ghost py-2">
+      <div className="flex justify-end px-12 font-sans text-sm text-attribution">
         <span>
           by{" "}
           <a
             href="https://amoresjan.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-black underline hover:text-gray-700"
+            className="text-ink underline hover:opacity-70"
           >
             @amoresjan
           </a>
