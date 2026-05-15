@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from .serializers import RegisterSerializer
 
@@ -63,9 +64,11 @@ class LoginView(APIView):
 
 class LogoutView(APIView):
     def post(self, request):
+        secure = not settings.DEBUG
+        samesite = 'Lax' if settings.DEBUG else 'None'
         response = Response({'message': 'Logged out'})
-        response.delete_cookie('access_token', path='/')
-        response.delete_cookie('refresh_token', path='/')
+        response.delete_cookie('access_token', path='/', samesite=samesite)
+        response.delete_cookie('refresh_token', path='/', samesite=samesite)
         return response
 
 
@@ -80,7 +83,7 @@ class RefreshView(APIView):
         try:
             refresh = RefreshToken(refresh_token)
             user = User.objects.get(id=refresh['user_id'])
-        except Exception:
+        except (TokenError, InvalidToken, User.DoesNotExist):
             return Response(
                 {'error': 'Invalid or expired token'},
                 status=status.HTTP_401_UNAUTHORIZED,
