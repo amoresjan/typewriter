@@ -56,6 +56,13 @@ class SaveResultTests(APITestCase):
         self.assertEqual(GameResult.objects.filter(user=self.user, news=self.news).count(), 1)
         result = GameResult.objects.get(user=self.user, news=self.news)
         self.assertEqual(result.wpm, 80)
+        self.assertEqual(result.accuracy, 98)
+
+    def test_save_result_missing_fields_returns_400(self):
+        response = self.client.post('/api/results/', {
+            'news_id': self.news.id,
+        }, format='json')
+        self.assertEqual(response.status_code, 400)
 
     def test_save_result_invalid_news_returns_404(self):
         response = self.client.post('/api/results/', {
