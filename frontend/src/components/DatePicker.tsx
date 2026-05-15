@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -27,14 +27,14 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     timeZone: "UTC",
   });
 
-  const handleSelect = (date: Date | undefined) => {
+  const handleSelect = useCallback((date: Date | undefined) => {
     setOpen(false);
     if (!date) {
       onSelect(undefined);
       return;
     }
     onSelect(format(date, "MM-dd-yyyy"));
-  };
+  }, [onSelect]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
