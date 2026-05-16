@@ -16,7 +16,12 @@ const NewsContent: React.FC<NewsContentProps> = React.memo(
 
     useEffect(() => {
       const handleGlobalKeyDown = () => {
-        if (!isFocused && containerRef.current) {
+        const active = document.activeElement;
+        const isFormField =
+          active instanceof HTMLInputElement ||
+          active instanceof HTMLTextAreaElement ||
+          active instanceof HTMLSelectElement;
+        if (!isFocused && !isFormField && containerRef.current) {
           containerRef.current.focus();
         }
       };

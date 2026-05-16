@@ -48,12 +48,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           </button>
         }
       />
-      <PopoverContent className="w-auto border-ink bg-paper p-0" align="center">
+      <PopoverContent className="w-auto rounded-none border-2 border-ink bg-paper p-0 shadow-[4px_4px_0px_0px_#0f0e0c] ring-0" align="center">
         <Calendar
           mode="single"
           selected={parsed}
           onSelect={handleSelect}
-          disabled={(d) => d > new Date()}
+          disabled={(d) => d > new Date() || d < new Date("2026-05-14")}
         />
       </PopoverContent>
     </Popover>

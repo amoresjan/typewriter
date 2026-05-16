@@ -33,7 +33,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <h2 className="font-old-english text-2xl">Create Account</h2>
+      <header>
+        <p className="mb-1 font-sans text-xs font-semibold uppercase tracking-widest text-attribution">
+          New Correspondent
+        </p>
+        <h2 className="text-xl font-semibold leading-tight">Create Account</h2>
+      </header>
       {error && <p className="font-sans text-sm text-press-red">{error}</p>}
       <input
         type="text"
@@ -41,7 +46,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
-        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus:ring-1 focus:ring-ink"
+        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
       />
       <input
         type="password"
@@ -50,7 +55,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         onChange={(e) => setPassword(e.target.value)}
         required
         minLength={8}
-        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus:ring-1 focus:ring-ink"
+        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
       />
       <NeoButton type="submit" disabled={loading}>
         {loading ? "Creating account…" : "Create Account"}
@@ -60,7 +65,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         onClick={onSwitchToLogin}
         className="font-sans text-sm underline"
       >
-        Already have an account? Sign in
+        Already on the masthead? Sign in
       </button>
     </form>
   );

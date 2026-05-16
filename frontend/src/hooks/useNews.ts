@@ -7,9 +7,6 @@ export const useNews = (date?: string) => {
   return useQuery<News>({
     queryKey: ["news", date ?? "today"],
     queryFn: async () => {
-      if (!import.meta.env.VITE_API_URL && import.meta.env.DEV) {
-        return NEWS_CONTENT_MOCK;
-      }
       const baseUrl = getBaseUrl();
       const url = date
         ? `${baseUrl}/api/news/${date}/`

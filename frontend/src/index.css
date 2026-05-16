@@ -30,7 +30,6 @@
 @layer base {
   html {
     font-family: "Times New Roman", Times, serif;
-    @apply font-sans;
   }
 
   *,
@@ -125,7 +124,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-paper text-ink;
   }
 }
 /*

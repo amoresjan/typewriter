@@ -33,7 +33,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <h2 className="font-old-english text-2xl">Sign In</h2>
+      <header>
+        <p className="mb-1 font-sans text-xs font-semibold uppercase tracking-widest text-attribution">
+          Correspondent Access
+        </p>
+        <h2 className="text-xl font-semibold leading-tight">Sign In</h2>
+      </header>
       {error && <p className="font-sans text-sm text-press-red">{error}</p>}
       <input
         type="text"
@@ -41,7 +46,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
-        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus:ring-1 focus:ring-ink"
+        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
       />
       <input
         type="password"
@@ -49,7 +54,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus:ring-1 focus:ring-ink"
+        className="border border-ink bg-paper px-3 py-2 font-sans text-sm outline-none focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
       />
       <NeoButton type="submit" disabled={loading}>
         {loading ? "Signing in…" : "Sign In"}
@@ -59,7 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         onClick={onSwitchToRegister}
         className="font-sans text-sm underline"
       >
-        No account? Register
+        New here? Create an account
       </button>
     </form>
   );
