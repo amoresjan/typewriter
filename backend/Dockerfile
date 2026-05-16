@@ -22,7 +22,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Collect static files (SECRET_KEY only needed to satisfy settings import at build time)
-RUN SECRET_KEY=dummy-build-only-key python manage.py collectstatic --noinput
+RUN SECRET_KEY=dummy-build-only-key ALLOWED_HOSTS=dummy python manage.py collectstatic --noinput
 
 # Run gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "typewriter_api.wsgi:application"]
