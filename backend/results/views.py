@@ -19,7 +19,7 @@ class SaveResultView(APIView):
                 {'error': 'news_id, wpm, and accuracy are required'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if not isinstance(wpm, int) or not isinstance(accuracy, int) or wpm < 0 or not (0 <= accuracy <= 100):
+        if not isinstance(wpm, int) or not isinstance(accuracy, int) or not (0 <= wpm <= 300) or not (0 <= accuracy <= 100):
             return Response(
                 {'error': 'wpm must be a non-negative integer; accuracy must be 0–100'},
                 status=status.HTTP_400_BAD_REQUEST,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@context/AuthContext";
 import { useProfile } from "@hooks/useProfile";
@@ -12,11 +12,17 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
   const { user, logout } = useAuth();
   const { data: profile, isLoading, isError } = useProfile(true);
   const queryClient = useQueryClient();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
+    setLoggingOut(true);
     await logout();
-    queryClient.removeQueries({ queryKey: ["profile"] });
+    queryClient.clear();
     onClose();
+  };
+
+  const handleRetry = () => {
+    void queryClient.invalidateQueries({ queryKey: ["profile"] });
   };
 
   const hasStats = profile && profile.total_games > 0;
@@ -30,14 +36,22 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
 
       <div className="mt-6 border-t border-ash-border">
         {isLoading && (
-          <p className="py-4 font-sans text-sm text-attribution">
+          <p className="animate-pulse py-4 font-sans text-sm text-attribution">
             Retrieving record…
           </p>
         )}
-        {isError && (
-          <p className="py-4 font-sans text-sm text-press-red">
-            Could not retrieve correspondent file.
-          </p>
+        {isError && !profile && (
+          <div className="py-4">
+            <p className="font-sans text-sm text-press-red">
+              Could not retrieve correspondent file.
+            </p>
+            <button
+              onClick={handleRetry}
+              className="mt-2 font-sans text-sm underline underline-offset-2"
+            >
+              Try the wires again
+            </button>
+          </div>
         )}
         {profile && !hasStats && (
           <p className="py-4 font-sans text-sm italic text-attribution">
@@ -48,7 +62,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
           <dl>
             <div className="flex items-baseline justify-between py-3">
               <dt className="font-sans text-sm text-attribution">Best WPM</dt>
-              <dd className="font-sans text-xl font-bold tabular-nums">
+              <dd className="font-sans text-3xl font-bold tabular-nums">
                 {profile.best_wpm}
               </dd>
             </div>
@@ -56,13 +70,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
               <dt className="font-sans text-sm text-attribution">
                 Avg. Accuracy
               </dt>
-              <dd className="font-sans text-xl font-bold tabular-nums">
-                {profile.avg_accuracy}%
+              <dd className="font-sans text-3xl font-bold tabular-nums">
+                {Math.round(profile.avg_accuracy)}%
               </dd>
             </div>
             <div className="flex items-baseline justify-between border-t border-ash-border py-3">
               <dt className="font-sans text-sm text-attribution">Dispatches</dt>
-              <dd className="font-sans text-xl font-bold tabular-nums">
+              <dd className="font-sans text-3xl font-bold tabular-nums">
                 {profile.total_games}
               </dd>
             </div>
@@ -70,9 +84,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ onClose }) => {
         )}
       </div>
 
-      <div className="mt-6 border-t border-ash-border pt-6">
-        <NeoButton variant="secondary" onClick={handleLogout} className="w-full">
-          Sign Out
+      <div className="mt-6 border-t border-ash-border pt-6 flex justify-center">
+        <NeoButton variant="secondary" onClick={handleLogout} disabled={loggingOut}>
+          {loggingOut ? "Signing out…" : "Sign Out"}
         </NeoButton>
       </div>
     </div>

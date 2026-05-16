@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { AuthContext } from "./AuthContext";
 import { User } from "@app-types";
-import { getBaseUrl } from "../lib/api";
+import { getBaseUrl, getCsrfToken, initCsrf } from "../lib/api";
 
 const STORAGE_KEY = "typewriter_user";
 
@@ -18,10 +18,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   useEffect(() => {
+    void initCsrf();
     if (!localStorage.getItem(STORAGE_KEY)) return;
     fetch(`${getBaseUrl()}/api/auth/refresh/`, {
       method: "POST",
       credentials: "include",
+      headers: { "X-CSRFToken": getCsrfToken() },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Session expired");
@@ -38,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const res = await fetch(`${getBaseUrl()}/api/auth/login/`, {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrfToken() },
       body: JSON.stringify({ username, password }),
     });
     if (!res.ok) {
@@ -54,7 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const res = await fetch(`${getBaseUrl()}/api/auth/register/`, {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrfToken() },
       body: JSON.stringify({ username, password }),
     });
     if (!res.ok) {
@@ -74,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetch(`${getBaseUrl()}/api/auth/logout/`, {
         method: "POST",
         credentials: "include",
+        headers: { "X-CSRFToken": getCsrfToken() },
       });
     } catch {
       // best-effort server logout; always clear local state

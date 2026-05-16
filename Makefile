@@ -1,5 +1,5 @@
 dev-backend:
-	cd backend && bash -c "source env/bin/activate && python manage.py runserver"
+	cd backend && bash -c "source env/bin/activate && DEBUG=True python manage.py runserver"
 
 migrate:
 	cd backend && bash -c "source env/bin/activate && python manage.py migrate"

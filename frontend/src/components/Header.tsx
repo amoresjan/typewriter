@@ -31,8 +31,9 @@ const HeaderMeta: React.FC<{
     <>
       <div className="mt-1 flex flex-row items-center justify-between border-b-2 border-ink font-sans text-sm">
         <button
-          className="w-48 cursor-pointer text-left hover:underline"
+          className="w-48 cursor-pointer text-left underline decoration-ash-muted underline-offset-2 hover:decoration-ink"
           onClick={() => setModalOpen(true)}
+          aria-haspopup="dialog"
         >
           {user?.username ?? "Guest"}
         </button>

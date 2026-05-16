@@ -16,7 +16,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [guestView, setGuestView] = useState<GuestView>("login");
 
   return (
-    <Modal className="w-full max-w-sm text-left" onClickOverlay={onClose} onClose={onClose}>
+    <Modal className="animate-modal-enter w-full max-w-sm text-left" onClickOverlay={onClose} onClose={onClose}>
       {user ? (
         <ProfileView onClose={onClose} />
       ) : guestView === "login" ? (

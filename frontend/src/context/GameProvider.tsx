@@ -1,15 +1,17 @@
 import React, { useEffect, useReducer, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { typingReducer } from "@reducers/TypingReducer";
 import { News, TypingState } from "@app-types";
 import { GameDispatchContext, GameStateContext } from "./GameContext";
 import { useAuth } from "./AuthContext";
-import { getBaseUrl } from "../lib/api";
+import { getBaseUrl, getCsrfToken } from "../lib/api";
 
 export const GameProvider: React.FC<{
   children: React.ReactNode;
   news: News;
 }> = ({ children, news }) => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const wordsList = news.content.split(/\s+/);
   const STORAGE_KEY = "typewriter_game_state";
 
@@ -89,15 +91,17 @@ export const GameProvider: React.FC<{
     fetch(`${getBaseUrl()}/api/results/`, {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrfToken() },
       body: JSON.stringify({
         news_id: news.id,
         wpm: currentState.wpm,
         accuracy: currentState.accuracy,
       }),
-    }).catch(() => {
-      // best-effort — silently ignore failures
-    });
+    })
+      .then(() => queryClient.invalidateQueries({ queryKey: ["profile"] }))
+      .catch(() => {
+        // best-effort — silently ignore failures
+      });
   }, [isGameFinished, news.id]);
 
   useEffect(() => {
